@@ -11,8 +11,6 @@ const routes = routeNames[lang];
 const navItems = [
   { label: t('nav.home', lang), href: localizedPath('', lang) },
   { label: t('nav.projects', lang), href: localizedPath(routes.projects, lang) },
-  { label: t('nav.cv', lang), href: localizedPath(routes.cv, lang) },
-  { label: t('nav.blog', lang), href: localizedPath(routes.blog, lang) },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '');

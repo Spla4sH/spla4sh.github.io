@@ -39,13 +39,10 @@ export function switchLangPath(currentUrl: URL, targetLang: Lang): string {
 
   const mapped = segments.map((seg, i) => {
     if (i === 0) return seg;
-    // Map known route names DE <-> EN
     if (targetLang === 'en') {
       if (seg === 'projekte') return 'projects';
-      if (seg === 'lebenslauf') return 'cv';
     } else {
       if (seg === 'projects') return 'projekte';
-      if (seg === 'cv') return 'lebenslauf';
     }
     return seg;
   });
@@ -53,7 +50,7 @@ export function switchLangPath(currentUrl: URL, targetLang: Lang): string {
   return '/' + mapped.join('/');
 }
 
-export const routeNames: Record<Lang, { cv: string; projects: string; blog: string }> = {
-  de: { cv: 'lebenslauf', projects: 'projekte', blog: 'blog' },
-  en: { cv: 'cv', projects: 'projects', blog: 'blog' },
+export const routeNames: Record<Lang, { projects: string }> = {
+  de: { projects: 'projekte' },
+  en: { projects: 'projects' },
 };

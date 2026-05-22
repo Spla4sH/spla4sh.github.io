@@ -1,12 +1,10 @@
 {
   "site.title": "Sebastian Rösch",
-  "site.description": "Platform Engineer · Data Scientist · Curious Builder. Portfolio und Blog von Sebastian Rösch.",
+  "site.description": "Platform Engineer · Data Scientist · Curious Builder. Portfolio von Sebastian Rösch.",
 
   "nav.home": "Start",
   "nav.about": "Über mich",
-  "nav.cv": "Lebenslauf",
   "nav.projects": "Projekte",
-  "nav.blog": "Blog",
 
   "lang.switch": "Sprache wechseln",
   "lang.toGerman": "Deutsch",
@@ -16,7 +14,6 @@
   "hero.tagline": "Platform Engineer · Data Scientist · Curious Builder",
   "hero.intro": "Ich baue Systeme, die zuverlässig laufen, und Modelle, die etwas verändern. Aktuell offen für neue Herausforderungen.",
   "hero.openToWork": "Open to work",
-  "hero.viewCV": "Lebenslauf ansehen",
   "hero.viewProjects": "Projekte ansehen",
   "hero.contact": "Kontakt",
 
@@ -29,15 +26,6 @@
   "about.skills.backend": "Backend",
   "about.skills.frontend": "Frontend",
 
-  "cv.title": "Lebenslauf",
-  "cv.download": "Als PDF herunterladen",
-  "cv.experience": "Berufserfahrung",
-  "cv.education": "Ausbildung",
-  "cv.skills": "Kenntnisse",
-  "cv.languages": "Sprachen",
-  "cv.languages.german": "Deutsch (Muttersprache)",
-  "cv.languages.english": "Englisch (verhandlungssicher)",
-
   "projects.title": "Projekte",
   "projects.subtitle": "Eine Auswahl meiner Arbeit — von Plattform-Engineering bis Machine Learning.",
   "projects.filter.all": "Alle",
@@ -49,13 +37,6 @@
   "projects.viewOnGithub": "Auf GitHub ansehen",
   "projects.readMore": "Details",
   "projects.backToList": "← Zurück zur Übersicht",
-
-  "blog.title": "Blog",
-  "blog.subtitle": "Tech-Notes und Gelerntes aus meinen Projekten.",
-  "blog.readMore": "Weiterlesen",
-  "blog.published": "Veröffentlicht am",
-  "blog.minRead": "Min. Lesezeit",
-  "blog.backToList": "← Zurück zum Blog",
 
   "footer.builtWith": "Gebaut mit",
   "footer.viewSource": "Quellcode",
