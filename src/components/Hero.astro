@@ -1,0 +1,59 @@
+---
+import { t, localizedPath, routeNames, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const routes = routeNames[lang];
+---
+
+<section class="container-prose pt-12 sm:pt-20 pb-16">
+  <div class="flex items-center gap-2 mb-6">
+    <span class="relative flex h-2.5 w-2.5">
+      <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-75"></span>
+      <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]"></span>
+    </span>
+    <span class="text-xs font-mono uppercase tracking-wider text-[var(--color-accent)]">
+      {t('hero.openToWork', lang)}
+    </span>
+  </div>
+
+  <p class="text-[var(--color-fg-muted)] text-base sm:text-lg mb-2 font-mono">
+    {t('hero.greeting', lang)}
+  </p>
+
+  <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-[var(--color-fg)] mb-6">
+    Sebastian <span class="text-[var(--color-accent)]">Rösch</span>
+  </h1>
+
+  <p class="text-lg sm:text-xl text-[var(--color-fg-muted)] font-mono mb-8 tracking-tight">
+    {t('hero.tagline', lang)}
+  </p>
+
+  <p class="text-base sm:text-lg text-[var(--color-fg-muted)] leading-relaxed mb-10 max-w-xl">
+    {t('hero.intro', lang)}
+  </p>
+
+  <div class="flex flex-wrap items-center gap-3">
+    <a
+      href={localizedPath(routes.cv, lang)}
+      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[var(--color-accent)] text-[var(--color-bg)] font-medium hover:bg-[var(--color-accent-hover)] transition-colors"
+    >
+      {t('hero.viewCV', lang)}
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+    <a
+      href={localizedPath(routes.projects, lang)}
+      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-[var(--color-border-strong)] text-[var(--color-fg)] font-medium hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+    >
+      {t('hero.viewProjects', lang)}
+    </a>
+    <a
+      href="mailto:sebastian.roesch92@gmail.com"
+      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md text-[var(--color-fg-muted)] hover:text-[var(--color-accent)] transition-colors"
+    >
+      {t('hero.contact', lang)}
+    </a>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+title: What I learned building a local GitOps lab
+description: ArgoCD, App-of-Apps and the discipline of never touching the cluster with kubectl — notes from my Kubernetes home lab.
+lang: en
+urlSlug: gitops-lab-lernen
+date: 2026-05-10
+tags: [Kubernetes, ArgoCD, GitOps, Learning]
+---
+
+Over the past few weeks I built a local Kubernetes lab to really understand the **App-of-Apps pattern** in ArgoCD — not from a tutorial, but in a setup that could plausibly run in production. Here are the three things that surprised me most.
+
+## 1. GitOps is a discipline, not a tool
+
+You can install ArgoCD and still not do GitOps. I understood this the moment I was debugging: frustrated that a deployment wasn't coming up, I ran a quick `kubectl edit deployment` — and then watched ArgoCD _revert it_.
+
+That's not a bug in ArgoCD. That's exactly the point. If the repo is the source of truth, every change has to start there. Otherwise drift is back within seconds.
+
+## 2. App-of-Apps turns the platform repo into a map
+
+The temptation is to throw all manifests into one big folder. App-of-Apps forces a hierarchy:
+
+```
+clusters/local/
+├── root.yaml             # points at the folder below
+└── applications/
+    ├── demo-app.yaml
+    └── ...
+```
+
+Each new service is exactly one new YAML in `applications/`. Suddenly the repo is readable.
+
+## 3. The image-update loop is the invisible complexity
+
+Code repo → CI → container image → image-bump commit in GitOps repo → ArgoCD reconciles.
+
+The chain sounds simple but has a lot of pitfalls — tag strategies, race conditions between commits, permissions across repos. I initially solved it with a GitHub Action that does a cross-repo commit. It works, but for a production setup I'd reach for Argo CD Image Updater today.
+
+---
+
+If the whole setup interests you: source code is at [Spla4sH/platform-gitops](https://github.com/Spla4sH/platform-gitops). Questions via [email](mailto:sebastian.roesch92@gmail.com).

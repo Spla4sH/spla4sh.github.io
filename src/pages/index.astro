@@ -1,0 +1,30 @@
+---
+// Root: detect browser language, redirect to /de/ or /en/. Falls back to /de/ for non-JS.
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Sebastian Rösch</title>
+    <meta name="description" content="Platform Engineer · Data Scientist · Curious Builder" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://spla4sh.github.io/de/" />
+    <meta http-equiv="refresh" content="0; url=/de/" />
+    <script is:inline>
+      try {
+        const lang = (navigator.language || 'de').toLowerCase();
+        const target = lang.startsWith('en') ? '/en/' : '/de/';
+        window.location.replace(target);
+      } catch (e) {
+        window.location.replace('/de/');
+      }
+    </script>
+  </head>
+  <body>
+    <p>
+      Redirecting... <a href="/de/">Deutsch</a> · <a href="/en/">English</a>
+    </p>
+  </body>
+</html>

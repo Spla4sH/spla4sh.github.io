@@ -1,0 +1,104 @@
+---
+import { t, localizedPath, routeNames, type Lang } from '../lib/i18n';
+import LanguageToggle from './LanguageToggle.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const routes = routeNames[lang];
+
+const navItems = [
+  { label: t('nav.home', lang), href: localizedPath('', lang) },
+  { label: t('nav.projects', lang), href: localizedPath(routes.projects, lang) },
+  { label: t('nav.cv', lang), href: localizedPath(routes.cv, lang) },
+  { label: t('nav.blog', lang), href: localizedPath(routes.blog, lang) },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<header
+  class="fixed top-0 inset-x-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/80 backdrop-blur-md"
+>
+  <nav class="container-wide flex h-16 items-center justify-between">
+    <a
+      href={localizedPath('', lang)}
+      class="font-mono text-sm font-semibold tracking-tight text-[var(--color-fg)] hover:text-[var(--color-accent)]"
+    >
+      sebastian-roesch<span class="text-[var(--color-accent)]">.dev</span>
+    </a>
+
+    <div class="flex items-center gap-1 sm:gap-2">
+      <ul class="hidden md:flex items-center gap-1">
+        {
+          navItems.map((item) => {
+            const isActive =
+              item.href === currentPath ||
+              (item.href !== localizedPath('', lang) && currentPath.startsWith(item.href));
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[
+                    'px-3 py-2 text-sm rounded-md transition-colors',
+                    isActive
+                      ? 'text-[var(--color-accent)]'
+                      : 'text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <LanguageToggle lang={lang} />
+
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        class="md:hidden p-2 text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]"
+        aria-label="Menu"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--color-border)] bg-[var(--color-bg)]">
+    <ul class="container-wide flex flex-col py-3 gap-1">
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="block px-3 py-2 text-sm rounded-md text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] hover:bg-[var(--color-surface)]"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  function bindMenu() {
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!toggle || !menu) return;
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  }
+  bindMenu();
+  document.addEventListener('astro:page-load', bindMenu);
+</script>

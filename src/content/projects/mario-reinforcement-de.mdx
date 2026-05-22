@@ -1,0 +1,27 @@
+---
+title: Super Mario mit Double DQN
+description: Ein Reinforcement-Learning-Agent, der Super Mario Bros mit Double Deep Q-Learning lernt — inklusive Live-Visualisierung des Trainings.
+lang: de
+urlSlug: mario-reinforcement
+category: ml
+stack: [Python, PyTorch, OpenAI Gym, nes-py, Double DQN, NumPy]
+github: https://github.com/Spla4sH/mario-reinforcement
+featured: true
+date: 2026-04-04
+---
+
+## Worum geht's
+
+Ein klassisches RL-Setup mit einem Twist: Double DQN gegen klassisches DQN, auf der NES-Version von Super Mario Bros — und das ganze in einer Variante, bei der man dem Agenten live beim Lernen zuschauen kann.
+
+## Highlights
+
+- **Double DQN** reduziert die typische DQN-Überschätzung der Q-Werte: zwei Netzwerke (online und target), bei denen die Aktionsauswahl entkoppelt ist vom Wert-Bootstrapping
+- **Experience Replay** mit prioritisiertem Sampling
+- **Frame-Stacking** (4 Frames) damit der Agent Geschwindigkeit erfassen kann
+- **Reward-Shaping**: Vorwärtsbewegung + Münzen + Lebensverlust-Strafe
+- Logs nach TensorBoard, Checkpoints regelmäßig persistiert
+
+## Was ich gelernt habe
+
+RL ist sensibel — der Unterschied zwischen "lernt nichts" und "lernt sauber" liegt oft in Hyperparametern, die sich kaum begründen lassen. Geduld zahlt sich aus: nach ~12 Stunden Training schafft der Agent World 1-1 zuverlässig.

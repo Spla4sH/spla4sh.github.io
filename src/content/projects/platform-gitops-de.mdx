@@ -1,0 +1,27 @@
+---
+title: GitOps-Lab mit ArgoCD App-of-Apps
+description: Ein lokales Kubernetes-Lab mit ArgoCD, das eine Go-API und ein nginx-Frontend nach dem App-of-Apps-Pattern auf einem kind-Cluster deployt.
+lang: de
+urlSlug: platform-gitops
+category: devops
+stack: [Kubernetes, ArgoCD, Helm, Go, kind, GitHub Actions, Docker, GHCR]
+github: https://github.com/Spla4sH/platform-gitops
+featured: true
+date: 2026-04-28
+---
+
+## Worum geht's
+
+Ich wollte das App-of-Apps-Pattern von ArgoCD nicht nur in der Theorie verstehen, sondern wirklich anwenden — auf einem realistischen Setup, das so auch in Produktion laufen könnte. Daraus entstand ein lokales Lab mit zwei Repositories: einem für die Anwendung ([demo-app](https://github.com/Spla4sH/demo-app), Go + nginx) und einem für den GitOps-Zustand ([platform-gitops](https://github.com/Spla4sH/platform-gitops)).
+
+## Aufbau
+
+- **kind**-Cluster, lokal in Docker Desktop
+- **ArgoCD** läuft im Cluster und überwacht das `platform-gitops`-Repo
+- **App-of-Apps**: eine Root-Application referenziert weitere Application-Manifeste — neue Services hinzufügen heißt nur, eine YAML im richtigen Ordner zu commiten
+- **In-Repo Helm-Chart** für die Demo-App, parametrisiert nach Environment
+- **CI** in `demo-app` baut Container-Images zu `ghcr.io/spla4sh/demo-app-*` und triggert ein Image-Bump im GitOps-Repo
+
+## Was ich gelernt habe
+
+Die Stärke von GitOps zeigt sich erst, wenn man sie konsistent anwendet: Drift ist sofort sichtbar, Rollbacks sind ein `git revert`. Die Disziplin, _keine_ kubectl-Änderungen am Cluster zu machen, ist ungewohnt — aber das ist der ganze Punkt.

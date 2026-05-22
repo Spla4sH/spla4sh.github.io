@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getLangFromUrl, t, type Lang } from '../lib/i18n';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: Lang;
+}
+
+const url = Astro.url;
+const lang = (Astro.props.lang ?? getLangFromUrl(url)) as Lang;
+const pageTitle = Astro.props.title
+  ? `${Astro.props.title} · ${t('site.title', lang)}`
+  : t('site.title', lang);
+const description = Astro.props.description ?? t('site.description', lang);
+const canonicalUrl = new URL(url.pathname, Astro.site ?? url.origin).toString();
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_US'} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <ClientRouter />
+  </head>
+  <body class="flex flex-col">
+    <Header lang={lang} />
+    <main class="flex-1 pt-24 pb-16">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

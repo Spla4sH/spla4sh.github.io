@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { t, localizedPath, routeNames } from '../../../lib/i18n';
+
+const lang = 'en' as const;
+const routes = routeNames[lang];
+const all = await getCollection('blog', (e) => e.data.lang === lang && !e.data.draft);
+const posts = all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const dateFormatter = new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout lang={lang} title={t('blog.title', lang)}>
+  <section class="container-prose">
+    <h1 class="text-4xl sm:text-5xl font-bold mb-3">{t('blog.title', lang)}</h1>
+    <p class="text-[var(--color-fg-muted)] text-lg mb-12">{t('blog.subtitle', lang)}</p>
+
+    <ul class="space-y-8">
+      {
+        posts.map((post) => (
+          <li>
+            <article class="group">
+              <p class="text-xs font-mono text-[var(--color-fg-dim)] mb-1">
+                {dateFormatter.format(post.data.date)}
+              </p>
+              <h2 class="text-xl sm:text-2xl font-semibold mb-2 group-hover:text-[var(--color-accent)] transition-colors">
+                <a href={`${localizedPath(routes.blog, lang)}/${post.data.urlSlug}`}>{post.data.title}</a>
+              </h2>
+              <p class="text-[var(--color-fg-muted)] mb-3 leading-relaxed">{post.data.description}</p>
+              <div class="flex flex-wrap gap-1.5">
+                {post.data.tags.map((tag: string) => (
+                  <span class="text-xs font-mono text-[var(--color-fg-dim)]">#{tag}</span>
+                ))}
+              </div>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

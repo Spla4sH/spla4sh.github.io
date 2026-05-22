@@ -1,0 +1,63 @@
+{
+  "site.title": "Sebastian Rösch",
+  "site.description": "Platform Engineer · Data Scientist · Curious Builder. Portfolio und Blog von Sebastian Rösch.",
+
+  "nav.home": "Start",
+  "nav.about": "Über mich",
+  "nav.cv": "Lebenslauf",
+  "nav.projects": "Projekte",
+  "nav.blog": "Blog",
+
+  "lang.switch": "Sprache wechseln",
+  "lang.toGerman": "Deutsch",
+  "lang.toEnglish": "English",
+
+  "hero.greeting": "Hi, ich bin",
+  "hero.tagline": "Platform Engineer · Data Scientist · Curious Builder",
+  "hero.intro": "Ich baue Systeme, die zuverlässig laufen, und Modelle, die etwas verändern. Aktuell offen für neue Herausforderungen.",
+  "hero.openToWork": "Open to work",
+  "hero.viewCV": "Lebenslauf ansehen",
+  "hero.viewProjects": "Projekte ansehen",
+  "hero.contact": "Kontakt",
+
+  "about.title": "Über mich",
+  "about.body": "Ich bin Wirtschaftsingenieur mit Schwerpunkt auf datengetriebenen Systemen — am Fraunhofer ISE habe ich Modelle für die Lastprognose in Gebäuden gebaut, und mich seitdem immer tiefer in die Plattform-Seite vorgearbeitet: Kubernetes, GitOps, ArgoCD. Dazwischen bauen sich kleinere Experimente an, wie ein Reinforcement-Learning-Agent für Super Mario.",
+  "about.body.search": "Aktuell suche ich eine Rolle, in der ich beides verbinden kann — am liebsten Platform Engineering oder ML Engineering mit Energie- oder Nachhaltigkeitsbezug.",
+  "about.skills": "Kenntnisse",
+  "about.skills.devops": "DevOps & Cloud",
+  "about.skills.data": "Data & ML",
+  "about.skills.backend": "Backend",
+  "about.skills.frontend": "Frontend",
+
+  "cv.title": "Lebenslauf",
+  "cv.download": "Als PDF herunterladen",
+  "cv.experience": "Berufserfahrung",
+  "cv.education": "Ausbildung",
+  "cv.skills": "Kenntnisse",
+  "cv.languages": "Sprachen",
+  "cv.languages.german": "Deutsch (Muttersprache)",
+  "cv.languages.english": "Englisch (verhandlungssicher)",
+
+  "projects.title": "Projekte",
+  "projects.subtitle": "Eine Auswahl meiner Arbeit — von Plattform-Engineering bis Machine Learning.",
+  "projects.filter.all": "Alle",
+  "projects.filter.devops": "DevOps",
+  "projects.filter.ml": "Machine Learning",
+  "projects.filter.data": "Data Science",
+  "projects.filter.web": "Web",
+  "projects.filter.research": "Forschung",
+  "projects.viewOnGithub": "Auf GitHub ansehen",
+  "projects.readMore": "Details",
+  "projects.backToList": "← Zurück zur Übersicht",
+
+  "blog.title": "Blog",
+  "blog.subtitle": "Tech-Notes und Gelerntes aus meinen Projekten.",
+  "blog.readMore": "Weiterlesen",
+  "blog.published": "Veröffentlicht am",
+  "blog.minRead": "Min. Lesezeit",
+  "blog.backToList": "← Zurück zum Blog",
+
+  "footer.builtWith": "Gebaut mit",
+  "footer.viewSource": "Quellcode",
+  "footer.copyright": "Sebastian Rösch"
+}

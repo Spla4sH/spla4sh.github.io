@@ -1,0 +1,25 @@
+---
+title: Energy Load Forecasting mit Darts
+description: Rolling-Window-Backtesting-Pipelines für die Lastprognose in Gebäuden — LightGBM, NHiTS, TSMixer und ein robuster saisonaler Baseline-Vergleich.
+lang: de
+urlSlug: darts-energy-forecasting
+category: data
+stack: [Python, Darts, LightGBM, NHiTS, TSMixer, pandas, MLflow]
+github: https://github.com/Spla4sH/darts-energy-forecasting
+date: 2026-03-18
+---
+
+## Worum geht's
+
+Im Rahmen meiner Tätigkeit am Fraunhofer ISE habe ich Lastprognose-Pipelines für Gebäude aufgebaut. Das Projekt zeigt, wie man mit [Darts](https://github.com/unit8co/darts) reproduzierbar verschiedene Modellklassen gegen eine starke saisonale Baseline (`GlobalNaiveSeasonal`) testet.
+
+## Architektur
+
+- **Rolling-Window-Backtesting**: jedes Modell wird über mehrere Forecast-Horizonte und Fenster evaluiert
+- **Modelle**: LightGBM (Gradient Boosting), NHiTS (Neural Hierarchical Interpolation), TSMixer — gegen `GlobalNaiveSeasonal` als unverhandelbare Baseline
+- **Pipeline**: deterministische Daten-Preprocessing, Feature-Engineering (Lag-Features, Kalender-Features), Hyperparameter-Tuning
+- **MAE / RMSE / sMAPE** pro Horizont in einer einheitlichen Ergebnistabelle
+
+## Was ich gelernt habe
+
+Die saisonale Baseline ist überraschend stark bei Energy-Lasten — ohne sie übersieht man, wie viel "Performance" eines komplexen Modells einfach vom Wochengang kommt. Reproduzierbarkeit (gleicher Seed, gleiche Splits, gleiche Metrik) ist im Forecasting wichtiger als das fancy Modell.

@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0a0a;
+  --color-surface: #111113;
+  --color-surface-2: #18181b;
+  --color-fg: #fafafa;
+  --color-fg-muted: #a1a1aa;
+  --color-fg-dim: #71717a;
+  --color-accent: #10b981;
+  --color-accent-hover: #34d399;
+  --color-border: #27272a;
+  --color-border-strong: #3f3f46;
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "SF Mono", monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    color-scheme: dark;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.08), transparent 70%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  h1, h2, h3, h4 {
+    color: var(--color-fg);
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  a {
+    transition: color 200ms ease, opacity 200ms ease;
+  }
+
+  code, pre, kbd {
+    font-family: var(--font-mono);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 5px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-fg-dim);
+  }
+}
+
+@utility container-prose {
+  max-width: 48rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@utility container-wide {
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}

@@ -1,0 +1,20 @@
+---
+import { switchLangPath, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const otherLang: Lang = lang === 'de' ? 'en' : 'de';
+const targetPath = switchLangPath(Astro.url, otherLang);
+const label = otherLang === 'de' ? 'DE' : 'EN';
+---
+
+<a
+  href={targetPath}
+  class="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-mono font-medium rounded-md border border-[var(--color-border)] text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] hover:border-[var(--color-accent)] hover:bg-[var(--color-surface)] transition-colors"
+  aria-label={`Switch to ${label}`}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+  {label}
+</a>

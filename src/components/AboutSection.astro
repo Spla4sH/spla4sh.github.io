@@ -1,0 +1,42 @@
+---
+import { t, type Lang } from '../lib/i18n';
+import TechBadge from './TechBadge.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const skills: Record<string, string[]> = {
+  devops: ['Kubernetes', 'ArgoCD', 'Helm', 'Docker', 'GitHub Actions', 'Terraform', 'kind', 'Linux'],
+  data: ['Python', 'PyTorch', 'scikit-learn', 'Darts', 'LightGBM', 'pandas', 'NumPy', 'Jupyter'],
+  backend: ['Go', 'Node.js', 'MongoDB', 'REST', 'Java'],
+  frontend: ['TypeScript', 'Astro', 'React', 'Tailwind', 'HTML/CSS'],
+};
+---
+
+<section class="container-prose py-16 border-t border-[var(--color-border)]">
+  <h2 class="text-3xl sm:text-4xl font-bold mb-8">{t('about.title', lang)}</h2>
+
+  <div class="space-y-4 text-base sm:text-lg text-[var(--color-fg-muted)] leading-relaxed mb-12">
+    <p>{t('about.body', lang)}</p>
+    <p>{t('about.body.search', lang)}</p>
+  </div>
+
+  <h3 class="text-xl font-semibold mb-6">{t('about.skills', lang)}</h3>
+
+  <div class="grid sm:grid-cols-2 gap-6">
+    {
+      Object.entries(skills).map(([groupKey, items]) => (
+        <div>
+          <h4 class="text-sm font-mono uppercase tracking-wider text-[var(--color-fg-dim)] mb-3">
+            {t(`about.skills.${groupKey}`, lang)}
+          </h4>
+          <div class="flex flex-wrap gap-1.5">
+            {items.map((skill) => <TechBadge label={skill} />)}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

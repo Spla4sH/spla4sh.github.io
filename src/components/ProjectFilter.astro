@@ -1,0 +1,60 @@
+---
+import { t, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+  categories: Array<'devops' | 'ml' | 'data' | 'web' | 'research'>;
+}
+const { lang, categories } = Astro.props;
+const allFilters = [{ key: 'all' as const, label: t('projects.filter.all', lang) }, ...categories.map((c) => ({ key: c, label: t(`projects.filter.${c}`, lang) }))];
+---
+
+<div id="project-filter" class="flex flex-wrap gap-2 mb-10" role="tablist">
+  {
+    allFilters.map((f, i) => (
+      <button
+        type="button"
+        data-filter={f.key}
+        class:list={[
+          'project-filter-btn px-3 py-1.5 text-sm rounded-md border transition-colors',
+          i === 0
+            ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-accent)]'
+            : 'border-[var(--color-border)] text-[var(--color-fg-muted)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-fg)]',
+        ]}
+        aria-pressed={i === 0 ? 'true' : 'false'}
+      >
+        {f.label}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  function bindFilter() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.project-filter-btn');
+    const cards = document.querySelectorAll<HTMLElement>('.project-card');
+    if (!buttons.length) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+        buttons.forEach((b) => {
+          const active = b === btn;
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          b.classList.toggle('border-[var(--color-accent)]', active);
+          b.classList.toggle('bg-[var(--color-accent)]/10', active);
+          b.classList.toggle('text-[var(--color-accent)]', active);
+          b.classList.toggle('border-[var(--color-border)]', !active);
+          b.classList.toggle('text-[var(--color-fg-muted)]', !active);
+        });
+        cards.forEach((card) => {
+          const cat = card.dataset.category;
+          const show = filter === 'all' || cat === filter;
+          card.style.display = show ? '' : 'none';
+        });
+      });
+    });
+  }
+  bindFilter();
+  document.addEventListener('astro:page-load', bindFilter);
+</script>

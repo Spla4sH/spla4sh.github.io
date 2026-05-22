@@ -1,0 +1,46 @@
+---
+import TechBadge from './TechBadge.astro';
+
+interface Props {
+  role: string;
+  org: string;
+  period: string;
+  location?: string;
+  description?: string;
+  highlights?: string[];
+  stack?: string[];
+}
+const { role, org, period, location, description, highlights = [], stack = [] } = Astro.props;
+---
+
+<article class="relative pl-6 pb-8 border-l border-[var(--color-border)] last:pb-0">
+  <span class="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]"></span>
+  <header class="mb-3">
+    <h3 class="text-lg sm:text-xl font-semibold">{role}</h3>
+    <p class="text-sm text-[var(--color-fg-muted)]">
+      <span class="text-[var(--color-fg)]">{org}</span>
+      {location && <span> · {location}</span>}
+    </p>
+    <p class="text-xs font-mono text-[var(--color-fg-dim)] mt-1">{period}</p>
+  </header>
+  {description && <p class="text-[var(--color-fg-muted)] mb-3 leading-relaxed">{description}</p>}
+  {
+    highlights.length > 0 && (
+      <ul class="space-y-1.5 mb-3 text-[var(--color-fg-muted)]">
+        {highlights.map((h) => (
+          <li class="flex gap-2">
+            <span class="text-[var(--color-accent)] mt-1.5 select-none">▹</span>
+            <span>{h}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    stack.length > 0 && (
+      <div class="flex flex-wrap gap-1.5 mt-3">
+        {stack.map((s) => <TechBadge label={s} />)}
+      </div>
+    )
+  }
+</article>
