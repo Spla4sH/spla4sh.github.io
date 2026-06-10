@@ -1,27 +1,37 @@
 ---
 title: Super Mario with Double DQN
-description: A reinforcement-learning agent that learns to play Super Mario Bros with Double Deep Q-Learning — including a live visualisation of training.
+description: A reinforcement-learning agent for Super Mario Bros using Double Deep Q-Learning — the architecture is in place, the first full training run is still ahead.
 lang: en
 urlSlug: mario-reinforcement
 category: ml
 stack: [Python, PyTorch, OpenAI Gym, nes-py, Double DQN, NumPy]
 github: https://github.com/Spla4sH/mario-reinforcement
-featured: true
+status: wip
 date: 2026-04-04
 ---
 
 ## What it's about
 
-A classic RL setup with a twist: Double DQN versus vanilla DQN, on the NES version of Super Mario Bros — and packaged so you can actually watch the agent learn in real time.
+A classic RL setup, built from scratch: an agent is supposed to learn the NES version of Super Mario Bros — purely from the pixels of the game screen, using Double Deep Q-Learning. The goal is a variant where you can watch the agent learn live.
 
-## Highlights
+## What's already in place
 
-- **Double DQN** reduces the typical DQN overestimation of Q-values: two networks (online and target) where action selection is decoupled from value bootstrapping
-- **Experience replay** with prioritised sampling
-- **Frame stacking** (4 frames) so the agent can perceive velocity
-- **Reward shaping**: forward motion + coins + a penalty for losing lives
-- Logs to TensorBoard, regular checkpoints persisted
+The codebase is modular (`agent.py`, `model.py`, `wrappers.py`, `train.py`, `config.py`):
 
-## What I learned
+- **Double DQN**: two networks (online and target), action selection decoupled from value bootstrapping — reduces the typical DQN overestimation of Q-values
+- **CNN architecture**: 3 convolutional + 2 fully-connected layers, input is 4 stacked grayscale frames (84×84) so the agent can perceive velocity
+- **Experience replay** and epsilon-greedy exploration
+- **Reward shaping**: forward progress + coins + survival
 
-RL is touchy — the difference between "learns nothing" and "learns cleanly" often comes down to hyperparameters that are hard to justify a priori. Patience pays off: after ~12 hours of training the agent reliably clears World 1-1.
+## Status & next steps
+
+The project is under active development — the architecture is in place, but a full training run hasn't happened yet. Up next:
+
+1. First long training run with checkpoint persistence
+2. Tuning hyperparameters (learning rate, epsilon decay, replay size)
+3. Verifying the live training visualization
+4. Documenting results — goal: clear World 1-1 reliably
+
+## Why this project
+
+You don't understand RL by reading about it — replay buffers, target networks and reward design are things you have to implement and debug yourself once. That's exactly what this lab is for.

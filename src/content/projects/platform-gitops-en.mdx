@@ -1,27 +1,37 @@
 ---
 title: GitOps lab with ArgoCD App-of-Apps
-description: A local Kubernetes lab using ArgoCD to deploy a Go API and nginx frontend onto a kind cluster following the App-of-Apps pattern.
+description: A local Kubernetes lab following the App-of-Apps pattern — the architecture is documented, the implementation with ArgoCD, Helm and CI is in progress.
 lang: en
 urlSlug: platform-gitops
 category: devops
 stack: [Kubernetes, ArgoCD, Helm, Go, kind, GitHub Actions, Docker, GHCR]
 github: https://github.com/Spla4sH/platform-gitops
-featured: true
+status: wip
 date: 2026-04-28
 ---
 
 ## What it's about
 
-I wanted to understand ArgoCD's App-of-Apps pattern not just in theory but in practice — on a realistic setup that could plausibly run in production. The result is a local lab with two repositories: one for the application ([demo-app](https://github.com/Spla4sH/demo-app), Go + nginx) and one for the GitOps state ([platform-gitops](https://github.com/Spla4sH/platform-gitops)).
+I want to understand ArgoCD's App-of-Apps pattern not just in theory but in practice — on a realistic setup that could plausibly run in production. The lab consists of two repositories: [demo-app](https://github.com/Spla4sH/demo-app) for the application code (Go API + nginx frontend) and [platform-gitops](https://github.com/Spla4sH/platform-gitops) as the GitOps source of truth watched by ArgoCD.
 
-## Architecture
+## The design
 
-- **kind** cluster running locally in Docker Desktop
-- **ArgoCD** running in-cluster, watching the `platform-gitops` repo
-- **App-of-Apps**: a root Application references further Application manifests — adding a new service just means committing a YAML in the right folder
-- **In-repo Helm chart** for the demo app, parameterised per environment
-- **CI** in `demo-app` builds container images to `ghcr.io/spla4sh/demo-app-*` and triggers an image bump in the GitOps repo
+The target architecture is documented in [ARCHITECTURE.md](https://github.com/Spla4sH/platform-gitops/blob/main/ARCHITECTURE.md):
 
-## What I learned
+- **kind** cluster running locally in Docker, with port mappings for 80/443
+- **App-of-Apps**: a root Application scans the apps directory — infrastructure (ingress-nginx, cert-manager, sealed-secrets, monitoring) and workloads each get their own Application manifest
+- **In-repo Helm chart** for the demo app
+- **CI** in `demo-app` builds container images to GHCR and triggers the image bump in the GitOps repo
 
-The power of GitOps only shows when you apply it consistently: drift is immediately visible, rollbacks are a `git revert`. The discipline of _never_ making `kubectl` changes to the cluster is unfamiliar at first — but that's exactly the point.
+## Status & next steps
+
+The architecture documentation and the kind cluster configuration are in place, the repos are set up. Now comes the actual implementation:
+
+1. Bootstrap script (kind create → ArgoCD install → root app)
+2. Application manifests for infra and workloads
+3. Helm chart for the demo app
+4. CI workflow with image build and automated image bump
+
+## Why this project
+
+GitOps promises: drift is immediately visible, rollbacks are a `git revert`, and nothing on the cluster gets changed by hand. Whether that discipline holds up day to day is something you only find out by building the whole setup yourself.

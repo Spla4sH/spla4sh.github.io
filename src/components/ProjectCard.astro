@@ -12,8 +12,9 @@ interface Props {
   github?: string;
   date: Date;
   featured?: boolean;
+  status?: 'wip' | 'done';
 }
-const { lang, slug, title, description, category, stack, github, date, featured } = Astro.props;
+const { lang, slug, title, description, category, stack, github, date, featured, status = 'done' } = Astro.props;
 const routes = routeNames[lang];
 const detailHref = `${localizedPath(routes.projects, lang)}/${slug}`;
 const year = date.getFullYear();
@@ -35,10 +36,16 @@ const year = date.getFullYear();
       </h3>
     </div>
     {
-      featured && (
-        <span class="shrink-0 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
-          Featured
+      status === 'wip' ? (
+        <span class="shrink-0 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded border border-amber-500/40 bg-amber-500/10 text-amber-400">
+          {t('projects.status.wip', lang)}
         </span>
+      ) : (
+        featured && (
+          <span class="shrink-0 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+            Featured
+          </span>
+        )
       )
     }
   </div>

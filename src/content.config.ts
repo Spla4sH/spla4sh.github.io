@@ -18,6 +18,7 @@ const projects = defineCollection({
       github: z.string().url().optional(),
       demo: z.string().url().optional(),
       featured: z.boolean().default(false),
+      status: z.enum(['wip', 'done']).default('done'),
       date: z.coerce.date(),
       cover: image().optional(),
       draft: z.boolean().default(false),

@@ -34,6 +34,7 @@
   "projects.filter.data": "Data Science",
   "projects.filter.web": "Web",
   "projects.filter.research": "Research",
+  "projects.status.wip": "Work in progress",
   "projects.viewOnGithub": "View on GitHub",
   "projects.readMore": "Details",
   "projects.backToList": "← Back to overview",

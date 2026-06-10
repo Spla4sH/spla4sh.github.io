@@ -28,9 +28,18 @@ const routes = routeNames[lang];
     </a>
 
     <header class="mb-10">
-      <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-accent)] mb-3">
-        {t(`projects.filter.${project.data.category}`, lang)}
-      </p>
+      <div class="flex items-center gap-3 mb-3">
+        <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-accent)]">
+          {t(`projects.filter.${project.data.category}`, lang)}
+        </p>
+        {
+          project.data.status === 'wip' && (
+            <span class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded border border-amber-500/40 bg-amber-500/10 text-amber-400">
+              {t('projects.status.wip', lang)}
+            </span>
+          )
+        }
+      </div>
       <h1 class="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">{project.data.title}</h1>
       <p class="text-lg text-[var(--color-fg-muted)] leading-relaxed mb-6">{project.data.description}</p>
       <div class="flex flex-wrap gap-1.5 mb-6">
