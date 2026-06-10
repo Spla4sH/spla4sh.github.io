@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import { t, type Lang } from '../lib/i18n';
 import TechBadge from './TechBadge.astro';
 
@@ -7,12 +8,12 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-const skills: Record<string, string[]> = {
-  devops: ['Kubernetes', 'ArgoCD', 'Helm', 'Docker', 'GitHub Actions', 'Terraform', 'kind', 'Linux'],
-  data: ['Python', 'PyTorch', 'scikit-learn', 'Darts', 'LightGBM', 'pandas', 'NumPy', 'Jupyter'],
-  backend: ['Go', 'Node.js', 'MongoDB', 'REST', 'Java'],
-  frontend: ['TypeScript', 'Astro', 'React', 'Tailwind', 'HTML/CSS'],
-};
+const skillGroups = [
+  { key: 'devops', icon: 'lucide:cloud', items: ['Kubernetes', 'ArgoCD', 'Helm', 'Docker', 'GitHub Actions', 'Terraform', 'kind', 'Linux'] },
+  { key: 'data', icon: 'lucide:brain', items: ['Python', 'PyTorch', 'scikit-learn', 'Darts', 'LightGBM', 'pandas', 'NumPy', 'Jupyter'] },
+  { key: 'backend', icon: 'lucide:server', items: ['Go', 'Node.js', 'MongoDB', 'REST', 'Java'] },
+  { key: 'frontend', icon: 'lucide:monitor', items: ['TypeScript', 'Astro', 'React', 'Tailwind', 'HTML/CSS'] },
+];
 ---
 
 <section class="container-prose py-16 border-t border-[var(--color-border)]">
@@ -27,11 +28,16 @@ const skills: Record<string, string[]> = {
 
   <div class="grid sm:grid-cols-2 gap-6">
     {
-      Object.entries(skills).map(([groupKey, items]) => (
-        <div>
-          <h4 class="text-sm font-mono uppercase tracking-wider text-[var(--color-fg-dim)] mb-3">
-            {t(`about.skills.${groupKey}`, lang)}
-          </h4>
+      skillGroups.map(({ key, icon, items }) => (
+        <div class="p-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]/50">
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+              <Icon name={icon} class="h-4 w-4" />
+            </span>
+            <h4 class="text-sm font-mono uppercase tracking-wider text-[var(--color-fg-dim)]">
+              {t(`about.skills.${key}`, lang)}
+            </h4>
+          </div>
           <div class="flex flex-wrap gap-1.5">
             {items.map((skill) => <TechBadge label={skill} />)}
           </div>
