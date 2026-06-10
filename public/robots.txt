@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://spla4sh.github.io/sitemap-index.xml

@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import icon from 'astro-icon';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
@@ -21,5 +22,14 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [mdx(), icon()],
+  integrations: [
+    mdx(),
+    icon(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'de',
+        locales: { de: 'de-DE', en: 'en-US' },
+      },
+    }),
+  ],
 });

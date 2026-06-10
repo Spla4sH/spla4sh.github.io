@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="-10%" r="80%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.16"/>
+      <stop offset="60%" stop-color="#10b981" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="0" y="626" width="1200" height="4" fill="#10b981"/>
+  <g transform="translate(92,96)">
+    <rect width="84" height="84" rx="16" fill="#111113" stroke="#27272a" stroke-width="2"/>
+    <path d="M22 27 L41 42 L22 57" stroke="#10b981" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <rect x="46" y="53" width="18" height="7" rx="3.5" fill="#10b981"/>
+  </g>
+  <text x="92" y="330" font-family="Segoe UI, Arial, sans-serif" font-size="96" font-weight="800" fill="#fafafa" letter-spacing="-2">Sebastian <tspan fill="#10b981">Rösch</tspan></text>
+  <text x="92" y="408" font-family="Consolas, Courier New, monospace" font-size="34" fill="#a1a1aa">Platform Engineer · Data Scientist · Curious Builder</text>
+  <g transform="translate(92,486)">
+    <circle cx="10" cy="10" r="10" fill="#10b981"/>
+    <text x="34" y="20" font-family="Consolas, Courier New, monospace" font-size="26" fill="#10b981" letter-spacing="2">OPEN TO WORK</text>
+  </g>
+  <text x="1108" y="566" text-anchor="end" font-family="Consolas, Courier New, monospace" font-size="26" fill="#71717a">spla4sh.github.io</text>
+</svg>

@@ -1,43 +1,30 @@
-# Astro Starter Kit: Minimal
+# spla4sh.github.io
+
+My personal portfolio — live at **[spla4sh.github.io](https://spla4sh.github.io)**.
+
+Bilingual (German / English), dark, fast. Built to show who I am and what I build: platform engineering, machine learning, time-series forecasting and web development.
+
+## Stack
+
+- **[Astro 6](https://astro.build)** — static-first, zero JS by default
+- **[Tailwind CSS 4](https://tailwindcss.com)** — via the Vite plugin, custom dark theme
+- **MDX** — content collections for project pages
+- **astro-icon** + Lucide for icons
+- Deployed to **GitHub Pages** via GitHub Actions on every push to `main`
+
+## Architecture notes
+
+- **i18n**: `de` (default) and `en` with fully prefixed routes (`/de/...`, `/en/...`). UI strings live in `src/i18n/*.json`, content exists once per language (`*-de.mdx` / `*-en.mdx`), and `hreflang` alternates are emitted per page.
+- **Projects** are a typed content collection (`src/content.config.ts`) with category, stack, status (`wip`/`done`) and featured flags — the list sorts finished work first and labels work-in-progress honestly.
+- The root `/` redirects to the browser language, falling back to `/de/`.
+
+## Development
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev       # http://localhost:4321
+npm run build     # production build to ./dist
+npm run preview   # serve the production build locally
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Node ≥ 22 required.
