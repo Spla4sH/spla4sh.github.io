@@ -22,9 +22,15 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
   <nav class="container-wide flex h-16 items-center justify-between">
     <a
       href={localizedPath('', lang)}
-      class="font-mono text-sm font-semibold tracking-tight text-[var(--color-fg)] hover:text-[var(--color-accent)]"
+      class="group flex items-center gap-2.5 font-mono text-sm font-semibold tracking-tight text-[var(--color-fg)] hover:text-[var(--color-accent)] transition-colors"
     >
-      sebastian-roesch<span class="text-[var(--color-accent)]">.dev</span>
+      <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[var(--color-border-strong)] bg-[var(--color-surface)] group-hover:border-[var(--color-accent)] transition-colors">
+        <svg width="14" height="14" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M30 38 L62 64 L30 90" stroke="#10b981" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="72" y="78" width="30" height="14" rx="7" fill="#10b981"/>
+        </svg>
+      </span>
+      sebastian-roesch
     </a>
 
     <div class="flex items-center gap-1 sm:gap-2">
