@@ -1,6 +1,6 @@
 {
   "site.title": "Sebastian Rösch",
-  "site.description": "Platform Engineer · Data Scientist · Curious Builder. Portfolio of Sebastian Rösch.",
+  "site.description": "B.Sc. Business Informatics · Curious Builder. Portfolio of Sebastian Rösch.",
 
   "nav.home": "Home",
   "nav.about": "About",
@@ -11,15 +11,15 @@
   "lang.toEnglish": "English",
 
   "hero.greeting": "Hi, I'm",
-  "hero.tagline": "Platform Engineer · Data Scientist · Curious Builder",
+  "hero.tagline": "B.Sc. Business Informatics · Curious Builder",
   "hero.intro": "I build systems that run reliably and models that make a difference. Currently open to new challenges.",
   "hero.openToWork": "Open to work",
   "hero.viewProjects": "View projects",
   "hero.contact": "Contact",
 
   "about.title": "About me",
-  "about.body": "I'm an industrial engineer with a focus on data-driven systems — at Fraunhofer ISE I built load-forecasting models for buildings, and have since worked my way deeper into the platform side: Kubernetes, GitOps, ArgoCD. Between those, smaller experiments pile up, like a reinforcement-learning agent that learns to play Super Mario.",
-  "about.body.search": "I'm currently looking for a role that combines both — ideally platform or ML engineering with a tie to energy or sustainability.",
+  "about.body": "I hold a B.Sc. in business informatics with a focus on data-driven systems — at Fraunhofer ISE I built load-forecasting models for buildings, and have since worked my way deeper into the platform side: Kubernetes, GitOps, ArgoCD. Between those, smaller experiments pile up, like a reinforcement-learning agent that learns to play Super Mario.",
+  "about.body.search": "I'm currently looking for a role where I can build things and keep learning — software development, data or DevOps.",
   "about.skills": "Skills",
   "about.skills.devops": "DevOps & Cloud",
   "about.skills.data": "Data & ML",

@@ -1,6 +1,6 @@
 {
   "site.title": "Sebastian Rösch",
-  "site.description": "Platform Engineer · Data Scientist · Curious Builder. Portfolio von Sebastian Rösch.",
+  "site.description": "Wirtschaftsinformatiker B.Sc. · Curious Builder. Portfolio von Sebastian Rösch.",
 
   "nav.home": "Start",
   "nav.about": "Über mich",
@@ -11,15 +11,15 @@
   "lang.toEnglish": "English",
 
   "hero.greeting": "Hi, ich bin",
-  "hero.tagline": "Platform Engineer · Data Scientist · Curious Builder",
+  "hero.tagline": "Wirtschaftsinformatiker B.Sc. · Curious Builder",
   "hero.intro": "Ich baue Systeme, die zuverlässig laufen, und Modelle, die etwas verändern. Aktuell offen für neue Herausforderungen.",
   "hero.openToWork": "Open to work",
   "hero.viewProjects": "Projekte ansehen",
   "hero.contact": "Kontakt",
 
   "about.title": "Über mich",
-  "about.body": "Ich bin Wirtschaftsingenieur mit Schwerpunkt auf datengetriebenen Systemen — am Fraunhofer ISE habe ich Modelle für die Lastprognose in Gebäuden gebaut, und mich seitdem immer tiefer in die Plattform-Seite vorgearbeitet: Kubernetes, GitOps, ArgoCD. Dazwischen bauen sich kleinere Experimente an, wie ein Reinforcement-Learning-Agent für Super Mario.",
-  "about.body.search": "Aktuell suche ich eine Rolle, in der ich beides verbinden kann — am liebsten Platform Engineering oder ML Engineering mit Energie- oder Nachhaltigkeitsbezug.",
+  "about.body": "Ich bin Wirtschaftsinformatiker (B.Sc.) mit Schwerpunkt auf datengetriebenen Systemen — am Fraunhofer ISE habe ich Modelle für die Lastprognose in Gebäuden gebaut, und mich seitdem immer tiefer in die Plattform-Seite vorgearbeitet: Kubernetes, GitOps, ArgoCD. Dazwischen bauen sich kleinere Experimente an, wie ein Reinforcement-Learning-Agent für Super Mario.",
+  "about.body.search": "Aktuell suche ich eine Rolle, in der ich entwickeln und weiterlernen kann — Softwareentwicklung, Data oder DevOps.",
   "about.skills": "Kenntnisse",
   "about.skills.devops": "DevOps & Cloud",
   "about.skills.data": "Data & ML",
