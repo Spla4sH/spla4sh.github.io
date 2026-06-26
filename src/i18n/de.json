@@ -12,14 +12,12 @@
 
   "hero.greeting": "Hi, ich bin",
   "hero.tagline": "Wirtschaftsinformatiker B.Sc. · Curious Builder",
-  "hero.intro": "Ich baue Systeme, die zuverlässig laufen, und Modelle, die etwas verändern. Aktuell offen für neue Herausforderungen.",
-  "hero.openToWork": "Open to work",
+  "hero.intro": "Ich baue Systeme, die zuverlässig laufen, und Modelle, die etwas verändern.",
   "hero.viewProjects": "Projekte ansehen",
   "hero.contact": "Kontakt",
 
   "about.title": "Über mich",
   "about.body": "Ich bin Wirtschaftsinformatiker (B.Sc.) mit Schwerpunkt auf datengetriebenen Systemen — am Fraunhofer ISE habe ich Modelle für die Lastprognose in Gebäuden gebaut. Davor habe ich bei der Haufe Group SAP-Testprozesse mit Tricentis TOSCA automatisiert — Enterprise-IT aus der praktischen Perspektive. In letzter Zeit arbeite ich mich über eigene Lab-Projekte in die Plattform-Seite ein: Kubernetes, GitOps, ArgoCD. Dazwischen bauen sich kleinere Experimente an, wie ein Reinforcement-Learning-Agent für Super Mario.",
-  "about.body.search": "Aktuell suche ich eine Rolle, in der ich entwickeln und weiterlernen kann — SAP-Consulting/-Development, Softwareentwicklung, Data oder DevOps.",
   "about.skills": "Kenntnisse",
   "about.skills.devops": "DevOps & Cloud",
   "about.skills.data": "Data & ML",

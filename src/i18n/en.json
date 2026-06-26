@@ -12,14 +12,12 @@
 
   "hero.greeting": "Hi, I'm",
   "hero.tagline": "B.Sc. Business Informatics · Curious Builder",
-  "hero.intro": "I build systems that run reliably and models that make a difference. Currently open to new challenges.",
-  "hero.openToWork": "Open to work",
+  "hero.intro": "I build systems that run reliably and models that make a difference.",
   "hero.viewProjects": "View projects",
   "hero.contact": "Contact",
 
   "about.title": "About me",
   "about.body": "I hold a B.Sc. in business informatics with a focus on data-driven systems — at Fraunhofer ISE I built load-forecasting models for buildings. Before that, I automated SAP test processes with Tricentis TOSCA at Haufe Group — enterprise IT from the hands-on side. Lately I've been getting into the platform side through my own lab projects: Kubernetes, GitOps, ArgoCD. Between those, smaller experiments pile up, like a reinforcement-learning agent that learns to play Super Mario.",
-  "about.body.search": "I'm currently looking for a role where I can build things and keep learning — SAP consulting/development, software development, data or DevOps.",
   "about.skills": "Skills",
   "about.skills.devops": "DevOps & Cloud",
   "about.skills.data": "Data & ML",
