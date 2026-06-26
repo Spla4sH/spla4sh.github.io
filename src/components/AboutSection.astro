@@ -8,11 +8,19 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-const skillGroups = [
-  { key: 'devops', icon: 'lucide:cloud', items: ['Kubernetes', 'ArgoCD', 'Helm', 'Docker', 'GitHub Actions', 'Terraform', 'kind', 'Linux'] },
-  { key: 'data', icon: 'lucide:brain', items: ['Python', 'PyTorch', 'scikit-learn', 'Darts', 'LightGBM', 'pandas', 'NumPy', 'Jupyter'] },
-  { key: 'backend', icon: 'lucide:server', items: ['Go', 'Node.js', 'MongoDB', 'REST', 'Java'] },
-  { key: 'frontend', icon: 'lucide:monitor', items: ['TypeScript', 'Astro', 'React', 'Tailwind', 'HTML/CSS'] },
+type SkillItem = string | { label: string; note: string };
+interface SkillGroup {
+  key: string;
+  icon: string;
+  items: SkillItem[];
+}
+
+const skillGroups: SkillGroup[] = [
+  { key: 'data', icon: 'lucide:brain', items: ['Python', 'pandas', 'NumPy', 'scikit-learn', 'PyTorch', 'Darts', 'AutoTS', 'Jupyter'] },
+  { key: 'enterprise', icon: 'lucide:building-2', items: ['SAP Test Automation', 'Tricentis TOSCA', 'Jira', 'Agile / Scrum'] },
+  { key: 'web', icon: 'lucide:monitor', items: ['TypeScript', 'JavaScript', 'React', 'Astro', 'Tailwind', 'HTML/CSS'] },
+  { key: 'backend', icon: 'lucide:server', items: ['Go', 'Java', 'Node.js', 'REST', 'MySQL', 'MongoDB'] },
+  { key: 'devops', icon: 'lucide:cloud', items: ['Docker', 'Linux', 'Git', 'Bash', 'GitHub Actions', 'AWS', { label: 'Kubernetes', note: 'about.skills.note.learning' }] },
 ];
 ---
 
@@ -39,7 +47,18 @@ const skillGroups = [
             </h4>
           </div>
           <div class="flex flex-wrap gap-1.5">
-            {items.map((skill) => <TechBadge label={skill} />)}
+            {items.map((item) =>
+              typeof item === 'string' ? (
+                <TechBadge label={item} />
+              ) : (
+                <span class="inline-flex items-center gap-1.5">
+                  <TechBadge label={item.label} />
+                  <span class="text-[10px] font-mono uppercase tracking-wider text-[var(--color-fg-dim)]">
+                    {t(item.note, lang)}
+                  </span>
+                </span>
+              )
+            )}
           </div>
         </div>
       ))

@@ -18,13 +18,15 @@
   "hero.contact": "Kontakt",
 
   "about.title": "Über mich",
-  "about.body": "Ich bin Wirtschaftsinformatiker (B.Sc.) mit Schwerpunkt auf datengetriebenen Systemen — am Fraunhofer ISE habe ich Modelle für die Lastprognose in Gebäuden gebaut, und mich seitdem immer tiefer in die Plattform-Seite vorgearbeitet: Kubernetes, GitOps, ArgoCD. Dazwischen bauen sich kleinere Experimente an, wie ein Reinforcement-Learning-Agent für Super Mario.",
-  "about.body.search": "Aktuell suche ich eine Rolle, in der ich entwickeln und weiterlernen kann — Softwareentwicklung, Data oder DevOps.",
+  "about.body": "Ich bin Wirtschaftsinformatiker (B.Sc.) mit Schwerpunkt auf datengetriebenen Systemen — am Fraunhofer ISE habe ich Modelle für die Lastprognose in Gebäuden gebaut. Davor habe ich bei der Haufe Group SAP-Testprozesse mit Tricentis TOSCA automatisiert — Enterprise-IT aus der praktischen Perspektive. In letzter Zeit arbeite ich mich über eigene Lab-Projekte in die Plattform-Seite ein: Kubernetes, GitOps, ArgoCD. Dazwischen bauen sich kleinere Experimente an, wie ein Reinforcement-Learning-Agent für Super Mario.",
+  "about.body.search": "Aktuell suche ich eine Rolle, in der ich entwickeln und weiterlernen kann — SAP-Consulting/-Development, Softwareentwicklung, Data oder DevOps.",
   "about.skills": "Kenntnisse",
   "about.skills.devops": "DevOps & Cloud",
   "about.skills.data": "Data & ML",
+  "about.skills.enterprise": "Enterprise & SAP",
   "about.skills.backend": "Backend",
-  "about.skills.frontend": "Frontend",
+  "about.skills.web": "Web & Frontend",
+  "about.skills.note.learning": "im Aufbau",
 
   "projects.title": "Projekte",
   "projects.subtitle": "Eine Auswahl meiner Arbeit — von Plattform-Engineering bis Machine Learning.",
