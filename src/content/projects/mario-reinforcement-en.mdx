@@ -1,37 +1,44 @@
 ---
 title: Super Mario with Double DQN
-description: A reinforcement-learning agent for Super Mario Bros using Double Deep Q-Learning — the architecture is in place, the first full training run is still ahead.
+description: A reinforcement-learning project for Super Mario Bros (Double DQN) — including training infrastructure (Docker/Kubernetes), tests, Grad-CAM vision and a Gradio demo. The full training run is the next step.
 lang: en
 urlSlug: mario-reinforcement
 category: ml
-stack: [Python, PyTorch, OpenAI Gym, nes-py, Double DQN, NumPy]
+stack: [Python, PyTorch, Double DQN, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
 github: https://github.com/Spla4sH/mario-reinforcement
 status: wip
-date: 2026-04-04
+date: 2026-06-28
 ---
 
 ## What it's about
 
-A classic RL setup, built from scratch: an agent is supposed to learn the NES version of Super Mario Bros — purely from the pixels of the game screen, using Double Deep Q-Learning. The goal is a variant where you can watch the agent learn live.
+An RL project built from scratch: an agent is meant to learn the NES version of Super Mario Bros — purely from the pixels of the game screen, using Double Deep Q-Learning. Around it sits the full tooling so the training runs reproducibly and the result is showable in the end.
 
 ## What's already in place
 
-The codebase is modular (`agent.py`, `model.py`, `wrappers.py`, `train.py`, `config.py`):
+Agent & training core:
 
-- **Double DQN**: two networks (online and target), action selection decoupled from value bootstrapping — reduces the typical DQN overestimation of Q-values
-- **CNN architecture**: 3 convolutional + 2 fully-connected layers, input is 4 stacked grayscale frames (84×84) so the agent can perceive velocity
-- **Experience replay** and epsilon-greedy exploration
-- **Reward shaping**: forward progress + coins + survival
+- **Double DQN** (online/target network), a CNN over 4 stacked grayscale frames (84×84), experience replay, epsilon-greedy
+- **Reward shaping** (`reward.py`) and **greedy evaluation with a best-checkpoint** (`evaluate.py`)
+
+Plus the engineering that turns an experiment into a project:
+
+- **Tests** (pytest) + **CI** via GitHub Actions
+- **Docker** + a **Kubernetes Job** (GPU request, persistent checkpoints/logs) for headless training
+- **Metrics, plots** and a **replay mode**
+- A **Grad-CAM vision overlay** — shows what the agent is "looking at"
+- Optional **Weights & Biases** experiment tracking
+- A **Gradio demo app** + a guide to deploy it as a public **Hugging Face Space**
 
 ## Status & next steps
 
-The project is under active development — the architecture is in place, but a full training run hasn't happened yet. Up next:
+The infrastructure is in place — the actual training run is the next step:
 
-1. First long training run with checkpoint persistence
-2. Tuning hyperparameters (learning rate, epsilon decay, replay size)
-3. Verifying the live training visualization
-4. Documenting results — goal: clear World 1-1 reliably
+1. **Smoke test**: does the agent learn on 1-1 at all? (reward/`x_pos` trending up, loss staying stable)
+2. **Solve level 1-1 consistently** — success criterion defined up front: reach the flag in ≥ 80% of 20 greedy episodes
+3. **Record a vision GIF** of the best run
+4. **Deploy the Gradio demo** as a public Hugging Face Space — a clickable link where the agent plays in the browser
 
 ## Why this project
 
-You don't understand RL by reading about it — replay buffers, target networks and reward design are things you have to implement and debug yourself once. That's exactly what this lab is for.
+You only understand RL by building and debugging replay buffers, target networks and reward design yourself once. On top of that comes the part that turns an experiment into a real project: testing it reproducibly, containerizing it, and making it showable as a browser demo in the end.
