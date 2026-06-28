@@ -22,6 +22,14 @@ const skillGroups: SkillGroup[] = [
   { key: 'backend', icon: 'lucide:server', items: ['Java', 'Node.js', 'REST', 'MySQL', 'MongoDB', { label: 'Go', note: 'about.skills.note.learning' }] },
   { key: 'devops', icon: 'lucide:cloud', items: ['Linux', 'Git', 'Bash', 'GitHub Actions', 'AWS', { label: 'Docker', note: 'about.skills.note.learning' }, { label: 'Kubernetes', note: 'about.skills.note.learning' }] },
 ];
+
+const groupColor: Record<string, string> = {
+  data: '#a78bfa',
+  enterprise: '#38bdf8',
+  web: '#2dd4bf',
+  backend: '#fbbf24',
+  devops: '#fb7185',
+};
 ---
 
 <section class="container-prose py-16 border-t border-[var(--color-border)]">
@@ -39,7 +47,10 @@ const skillGroups: SkillGroup[] = [
       skillGroups.map(({ key, icon, items }) => (
         <div class="p-5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]/50">
           <div class="flex items-center gap-2.5 mb-4">
-            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+            <span
+              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border"
+              style={`color: ${groupColor[key] ?? 'var(--color-accent)'}; border-color: color-mix(in srgb, ${groupColor[key] ?? 'var(--color-accent)'} 35%, transparent); background-color: color-mix(in srgb, ${groupColor[key] ?? 'var(--color-accent)'} 12%, transparent)`}
+            >
               <Icon name={icon} class="h-4 w-4" />
             </span>
             <h4 class="text-sm font-mono uppercase tracking-wider text-[var(--color-fg-dim)]">

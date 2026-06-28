@@ -18,18 +18,30 @@ const { lang, slug, title, description, category, stack, github, date, featured,
 const routes = routeNames[lang];
 const detailHref = `${localizedPath(routes.projects, lang)}/${slug}`;
 const year = date.getFullYear();
+
+const categoryColor: Record<string, string> = {
+  devops: '#60a5fa',
+  ml: '#a78bfa',
+  data: '#fbbf24',
+  web: '#2dd4bf',
+  research: '#fb7185',
+};
+const cat = categoryColor[category] ?? 'var(--color-accent)';
 ---
 
 <article
   data-category={category}
-  class="project-card group relative flex flex-col gap-4 p-6 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-border-strong)] transition-colors"
+  style={`--cat: ${cat}`}
+  class="project-card group relative flex flex-col gap-4 p-6 pl-7 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors"
 >
+  <span class="cat-bar absolute left-0 top-5 bottom-5 w-[3px] rounded-full"></span>
   <div class="flex items-start justify-between gap-3">
     <div>
-      <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-fg-dim)] mb-2">
-        {t(`projects.filter.${category}`, lang)} · {year}
+      <p class="text-xs font-mono uppercase tracking-wider mb-2">
+        <span class="cat-label">{t(`projects.filter.${category}`, lang)}</span>
+        <span class="text-[var(--color-fg-dim)]"> · {year}</span>
       </p>
-      <h3 class="text-xl font-semibold text-[var(--color-fg)] group-hover:text-[var(--color-accent)] transition-colors">
+      <h3 class="text-xl font-semibold text-[var(--color-fg)] transition-colors">
         <a href={detailHref} class="after:absolute after:inset-0">
           {title}
         </a>
@@ -71,3 +83,25 @@ const year = date.getFullYear();
     )
   }
 </article>
+
+<style>
+  .cat-label {
+    color: var(--cat);
+  }
+  .cat-bar {
+    background-color: color-mix(in srgb, var(--cat) 55%, transparent);
+    transition: background-color 0.2s ease;
+  }
+  .project-card {
+    transition: border-color 0.2s ease;
+  }
+  .project-card:hover {
+    border-color: color-mix(in srgb, var(--cat) 45%, var(--color-border));
+  }
+  .project-card:hover .cat-bar {
+    background-color: var(--cat);
+  }
+  .project-card:hover h3 a {
+    color: var(--cat);
+  }
+</style>
