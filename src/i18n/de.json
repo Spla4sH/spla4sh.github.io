@@ -12,12 +12,13 @@
 
   "hero.greeting": "Hi, ich bin",
   "hero.tagline": "Wirtschaftsinformatiker B.Sc. · Curious Builder",
-  "hero.intro": "Ich entwickle Software und datengetriebene Modelle, die echte Probleme lösen.",
+  "hero.intro": "Ich lerne am liebsten, indem ich Dinge baue: von Machine Learning über Web bis DevOps, meistens in eigenen Projekten.",
   "hero.viewProjects": "Projekte ansehen",
   "hero.contact": "Kontakt",
 
   "about.title": "Über mich",
-  "about.body": "Ich bin Wirtschaftsinformatiker (B.Sc.) mit Schwerpunkt auf datengetriebenen Systemen — am Fraunhofer ISE habe ich Modelle für die Lastprognose in Gebäuden gebaut. Davor habe ich bei der Haufe Group SAP-Testprozesse mit Tricentis TOSCA automatisiert — Enterprise-IT aus der praktischen Perspektive. In letzter Zeit arbeite ich mich über eigene Lab-Projekte in die Plattform-Seite ein: Kubernetes, GitOps, ArgoCD. Dazwischen bauen sich kleinere Experimente an, wie ein Reinforcement-Learning-Agent für Super Mario.",
+  "about.body": "Ich bin Wirtschaftsinformatiker (B.Sc.). Am Fraunhofer ISE habe ich Modelle für die Lastprognose in Gebäuden gebaut, davor bei der Haufe Group SAP-Testprozesse mit Tricentis TOSCA automatisiert.",
+  "about.body2": "Was mich darüber hinaus antreibt, ist Neugier. Ich bringe mir neue Themen bei, indem ich in der Freizeit eigene Projekte baue: mal ein Reinforcement-Learning-Agent für Super Mario, mal ein kleines Kubernetes-Lab, mal ein Webshop. Nicht, weil es ein großes Problem löst, sondern weil ich verstehen will, wie es funktioniert.",
   "about.skills": "Kenntnisse",
   "about.skills.devops": "DevOps & Cloud",
   "about.skills.data": "Data & ML",
