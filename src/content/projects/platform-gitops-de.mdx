@@ -1,6 +1,6 @@
 ---
 title: GitOps-Lab mit ArgoCD App-of-Apps
-description: Ein lokales Kubernetes-Lab nach dem App-of-Apps-Pattern — die Architektur ist dokumentiert, die Umsetzung mit ArgoCD, Helm und CI ist in Arbeit.
+description: Ein lokales Kubernetes-Lab nach dem App-of-Apps-Pattern. Die Architektur ist dokumentiert, die Umsetzung mit ArgoCD, Helm und CI ist in Arbeit.
 lang: de
 urlSlug: platform-gitops
 category: devops
@@ -12,14 +12,14 @@ date: 2026-04-28
 
 ## Worum geht's
 
-Ich will das App-of-Apps-Pattern von ArgoCD nicht nur in der Theorie verstehen, sondern wirklich anwenden — auf einem realistischen Setup, das so auch in Produktion laufen könnte. Das Lab besteht aus zwei Repositories: [demo-app](https://github.com/Spla4sH/demo-app) für den Anwendungscode (Go-API + nginx-Frontend) und [platform-gitops](https://github.com/Spla4sH/platform-gitops) als GitOps Source of Truth, die ArgoCD überwacht.
+Ich will das App-of-Apps-Pattern von ArgoCD nicht nur in der Theorie verstehen, sondern wirklich anwenden, auf einem realistischen Setup, das so auch in Produktion laufen könnte. Das Lab besteht aus zwei Repositories: [demo-app](https://github.com/Spla4sH/demo-app) für den Anwendungscode (Go-API + nginx-Frontend) und [platform-gitops](https://github.com/Spla4sH/platform-gitops) als GitOps Source of Truth, die ArgoCD überwacht.
 
 ## Das Design
 
 Die Zielarchitektur ist in der [ARCHITECTURE.md](https://github.com/Spla4sH/platform-gitops/blob/main/ARCHITECTURE.md) dokumentiert:
 
 - **kind**-Cluster, lokal in Docker, mit Port-Mappings für 80/443
-- **App-of-Apps**: eine Root-Application scannt das Apps-Verzeichnis — Infrastruktur (ingress-nginx, cert-manager, sealed-secrets, Monitoring) und Workloads sind je eigene Application-Manifeste
+- **App-of-Apps**: eine Root-Application scannt das Apps-Verzeichnis: Infrastruktur (ingress-nginx, cert-manager, sealed-secrets, Monitoring) und Workloads sind je eigene Application-Manifeste
 - **In-Repo Helm-Chart** für die Demo-App
 - **CI** in `demo-app` baut Container-Images nach GHCR und stößt den Image-Bump im GitOps-Repo an
 

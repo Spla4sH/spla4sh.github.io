@@ -1,6 +1,6 @@
 ---
 title: AutoTS Load Forecasting Pipeline
-description: Automated load forecasting with AutoTS — genetic model search, rolling-window evaluation across a full year and template-based persistence of the best models.
+description: "Automated load forecasting with AutoTS: genetic model search, rolling-window evaluation across a full year and template-based persistence of the best models."
 lang: en
 urlSlug: autots-forecasting
 category: data
@@ -12,11 +12,11 @@ date: 2026-03-18
 
 ## What it's about
 
-A pipeline for forecasting the energy consumption of buildings and households (grid import in kW) — using [AutoTS](https://github.com/winedarksea/AutoTS), which searches across dozens of model classes with a genetic algorithm to find the best configuration. The sister project to my [Darts pipeline](/en/projects/darts-energy-forecasting): same task, different framework, different degree of automation.
+A pipeline for forecasting the energy consumption of buildings and households (grid import in kW). It uses [AutoTS](https://github.com/winedarksea/AutoTS), which searches across dozens of model classes with a genetic algorithm to find the best configuration. The sister project to my [Darts pipeline](/en/projects/darts-energy-forecasting): same task, different framework, different degree of automation.
 
 ## Architecture
 
-- **Rolling-window forecasting** with configurable horizon and stride (default: 6 hours) — trained on January, evaluated on rolling forecasts from February through December
+- **Rolling-window forecasting** with configurable horizon and stride (default: 6 hours): trained on January, evaluated on rolling forecasts from February through December
 - **Weekly retraining**: AutoTS' genetic search runs regularly, the best models are persisted via the template system (`export_template` / `import_template`) and reused on the next run
 - **Probabilistic forecasts**: upper/lower bounds via a 95% prediction interval
 - **Six metrics** per run: RMSE, NRMSE, MAPE, Pearson r, interval coverage and interval width
@@ -24,4 +24,4 @@ A pipeline for forecasting the energy consumption of buildings and households (g
 
 ## What I learned
 
-AutoML for forecasting takes model selection off your plate, but not validation design — horizon, stride and retraining frequency shape the result more than the model class does. Also: prediction interval coverage is an underrated metric. A model whose 95% interval only covers 70% of reality is more dangerous for energy management than one with a slightly higher RMSE.
+AutoML for forecasting takes model selection off your plate, but not validation design. Horizon, stride and retraining frequency shape the result more than the model class does. Also: prediction interval coverage is an underrated metric. A model whose 95% interval only covers 70% of reality is more dangerous for energy management than one with a slightly higher RMSE.

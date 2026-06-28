@@ -1,6 +1,6 @@
 ---
 title: GitOps lab with ArgoCD App-of-Apps
-description: A local Kubernetes lab following the App-of-Apps pattern — the architecture is documented, the implementation with ArgoCD, Helm and CI is in progress.
+description: A local Kubernetes lab following the App-of-Apps pattern. The architecture is documented, the implementation with ArgoCD, Helm and CI is in progress.
 lang: en
 urlSlug: platform-gitops
 category: devops
@@ -12,14 +12,14 @@ date: 2026-04-28
 
 ## What it's about
 
-I want to understand ArgoCD's App-of-Apps pattern not just in theory but in practice — on a realistic setup that could plausibly run in production. The lab consists of two repositories: [demo-app](https://github.com/Spla4sH/demo-app) for the application code (Go API + nginx frontend) and [platform-gitops](https://github.com/Spla4sH/platform-gitops) as the GitOps source of truth watched by ArgoCD.
+I want to understand ArgoCD's App-of-Apps pattern not just in theory but in practice, on a realistic setup that could plausibly run in production. The lab consists of two repositories: [demo-app](https://github.com/Spla4sH/demo-app) for the application code (Go API + nginx frontend) and [platform-gitops](https://github.com/Spla4sH/platform-gitops) as the GitOps source of truth watched by ArgoCD.
 
 ## The design
 
 The target architecture is documented in [ARCHITECTURE.md](https://github.com/Spla4sH/platform-gitops/blob/main/ARCHITECTURE.md):
 
 - **kind** cluster running locally in Docker, with port mappings for 80/443
-- **App-of-Apps**: a root Application scans the apps directory — infrastructure (ingress-nginx, cert-manager, sealed-secrets, monitoring) and workloads each get their own Application manifest
+- **App-of-Apps**: a root Application scans the apps directory: infrastructure (ingress-nginx, cert-manager, sealed-secrets, monitoring) and workloads each get their own Application manifest
 - **In-repo Helm chart** for the demo app
 - **CI** in `demo-app` builds container images to GHCR and triggers the image bump in the GitOps repo
 

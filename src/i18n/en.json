@@ -28,7 +28,7 @@
   "about.skills.note.learning": "in progress",
 
   "projects.title": "Projects",
-  "projects.subtitle": "A selection of my work — from platform engineering to machine learning.",
+  "projects.subtitle": "A selection of my work: from platform engineering to machine learning.",
   "projects.filter.all": "All",
   "projects.filter.devops": "DevOps",
   "projects.filter.ml": "Machine Learning",

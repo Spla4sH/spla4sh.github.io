@@ -1,6 +1,6 @@
 ---
 title: AutoTS Load Forecasting Pipeline
-description: Automatisierte Lastprognose mit AutoTS — genetische Modellsuche, Rolling-Window-Evaluation übers ganze Jahr und Template-basierte Persistenz der besten Modelle.
+description: "Automatisierte Lastprognose mit AutoTS: genetische Modellsuche, Rolling-Window-Evaluation übers ganze Jahr und Template-basierte Persistenz der besten Modelle."
 lang: de
 urlSlug: autots-forecasting
 category: data
@@ -12,11 +12,11 @@ date: 2026-03-18
 
 ## Worum geht's
 
-Eine Pipeline zur Prognose des Stromverbrauchs von Gebäuden und Haushalten (Netzbezug in kW) — mit [AutoTS](https://github.com/winedarksea/AutoTS), das per genetischem Algorithmus über Dutzende Modellklassen hinweg die beste Konfiguration sucht. Das Schwesterprojekt zu meiner [Darts-Pipeline](/de/projekte/darts-energy-forecasting): gleiche Aufgabe, anderes Framework, anderer Automatisierungsgrad.
+Eine Pipeline zur Prognose des Stromverbrauchs von Gebäuden und Haushalten (Netzbezug in kW). Sie nutzt [AutoTS](https://github.com/winedarksea/AutoTS), das per genetischem Algorithmus über Dutzende Modellklassen hinweg die beste Konfiguration sucht. Das Schwesterprojekt zu meiner [Darts-Pipeline](/de/projekte/darts-energy-forecasting): gleiche Aufgabe, anderes Framework, anderer Automatisierungsgrad.
 
 ## Aufbau
 
-- **Rolling-Window-Forecasting** mit konfigurierbarem Horizont und Stride (Default: 6 Stunden) — trainiert auf Januar, evaluiert rollierend Februar bis Dezember
+- **Rolling-Window-Forecasting** mit konfigurierbarem Horizont und Stride (Default: 6 Stunden): trainiert auf Januar, evaluiert rollierend Februar bis Dezember
 - **Wöchentliches Retraining**: AutoTS' genetische Suche läuft regelmäßig neu, die besten Modelle werden per Template-System persistiert (`export_template` / `import_template`) und beim nächsten Lauf wiederverwendet
 - **Probabilistische Forecasts**: obere/untere Schranken über ein 95%-Prediction-Interval
 - **Sechs Metriken** pro Lauf: RMSE, NRMSE, MAPE, Pearson r, Interval-Coverage und Intervallbreite
@@ -24,4 +24,4 @@ Eine Pipeline zur Prognose des Stromverbrauchs von Gebäuden und Haushalten (Net
 
 ## Was ich gelernt habe
 
-AutoML fürs Forecasting nimmt einem die Modellwahl ab, aber nicht das Validierungsdesign — Horizont, Stride und Retraining-Frequenz bestimmen das Ergebnis stärker als die Modellklasse. Und: Prediction-Interval-Coverage ist eine unterschätzte Metrik. Ein Modell, dessen 95%-Intervall nur 70% der Realität abdeckt, ist fürs Energiemanagement gefährlicher als eines mit etwas höherem RMSE.
+AutoML fürs Forecasting nimmt einem die Modellwahl ab, aber nicht das Validierungsdesign. Horizont, Stride und Retraining-Frequenz bestimmen das Ergebnis stärker als die Modellklasse. Und: Prediction-Interval-Coverage ist eine unterschätzte Metrik. Ein Modell, dessen 95%-Intervall nur 70% der Realität abdeckt, ist fürs Energiemanagement gefährlicher als eines mit etwas höherem RMSE.

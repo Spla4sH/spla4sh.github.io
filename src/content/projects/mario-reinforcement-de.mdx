@@ -1,6 +1,6 @@
 ---
 title: Super Mario mit Double DQN
-description: Ein Reinforcement-Learning-Projekt für Super Mario Bros (Double DQN) — inklusive Trainings-Infrastruktur (Docker/Kubernetes), Tests, Grad-CAM-Vision und Gradio-Demo. Der große Trainingslauf ist der nächste Schritt.
+description: Ein Reinforcement-Learning-Projekt für Super Mario Bros (Double DQN), inklusive Trainings-Infrastruktur (Docker/Kubernetes), Tests, Grad-CAM-Vision und Gradio-Demo. Der große Trainingslauf ist der nächste Schritt.
 lang: de
 urlSlug: mario-reinforcement
 category: ml
@@ -12,7 +12,7 @@ date: 2026-06-28
 
 ## Worum geht's
 
-Ein RL-Projekt von Grund auf: Ein Agent soll die NES-Version von Super Mario Bros lernen — nur aus den Pixeln des Spielbildschirms, mit Double Deep Q-Learning. Drumherum die komplette Technik, damit das Training reproduzierbar läuft und das Ergebnis am Ende zeigbar ist.
+Ein RL-Projekt von Grund auf: Ein Agent soll die NES-Version von Super Mario Bros lernen, nur aus den Pixeln des Spielbildschirms, mit Double Deep Q-Learning. Drumherum die komplette Technik, damit das Training reproduzierbar läuft und das Ergebnis am Ende zeigbar ist.
 
 ## Was schon steht
 
@@ -26,18 +26,18 @@ Drumherum das Engineering, das ein Experiment zu einem Projekt macht:
 - **Tests** (pytest) + **CI** über GitHub Actions
 - **Docker** + ein **Kubernetes-Job** (GPU-Request, persistente Checkpoints/Logs) für headless Training
 - **Metriken, Plots** und ein **Replay-Modus**
-- **Grad-CAM-Vision-Overlay** — macht sichtbar, worauf der Agent „schaut"
+- **Grad-CAM-Vision-Overlay**: macht sichtbar, worauf der Agent „schaut"
 - Optionales **Weights & Biases**-Experiment-Tracking
 - Eine **Gradio-Demo-App** + Anleitung, sie als öffentlichen **Hugging-Face-Space** zu deployen
 
 ## Status & nächste Schritte
 
-Die Infrastruktur steht — der eigentliche Trainingslauf ist der nächste Schritt:
+Die Infrastruktur steht. Der eigentliche Trainingslauf ist der nächste Schritt:
 
 1. **Smoke-Test**: Lernt der Agent auf 1-1 überhaupt? (Reward/`x_pos` steigt im Trend, Loss bleibt stabil)
-2. **Level 1-1 konsistent lösen** — Erfolgskriterium vorab definiert: in ≥ 80 % von 20 Greedy-Episoden die Flagge erreichen
+2. **Level 1-1 konsistent lösen**, Erfolgskriterium vorab definiert: in ≥ 80 % von 20 Greedy-Episoden die Flagge erreichen
 3. **Vision-GIF** des besten Laufs aufnehmen
-4. **Gradio-Demo** als öffentlichen Hugging-Face-Space deployen — ein klickbarer Link, auf dem der Agent im Browser spielt
+4. **Gradio-Demo** als öffentlichen Hugging-Face-Space deployen: ein klickbarer Link, auf dem der Agent im Browser spielt
 
 ## Warum dieses Projekt
 

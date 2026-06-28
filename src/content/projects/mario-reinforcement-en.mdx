@@ -1,6 +1,6 @@
 ---
 title: Super Mario with Double DQN
-description: A reinforcement-learning project for Super Mario Bros (Double DQN) — including training infrastructure (Docker/Kubernetes), tests, Grad-CAM vision and a Gradio demo. The full training run is the next step.
+description: A reinforcement-learning project for Super Mario Bros (Double DQN), including training infrastructure (Docker/Kubernetes), tests, Grad-CAM vision and a Gradio demo. The full training run is the next step.
 lang: en
 urlSlug: mario-reinforcement
 category: ml
@@ -12,7 +12,7 @@ date: 2026-06-28
 
 ## What it's about
 
-An RL project built from scratch: an agent is meant to learn the NES version of Super Mario Bros — purely from the pixels of the game screen, using Double Deep Q-Learning. Around it sits the full tooling so the training runs reproducibly and the result is showable in the end.
+An RL project built from scratch: an agent is meant to learn the NES version of Super Mario Bros, purely from the pixels of the game screen, using Double Deep Q-Learning. Around it sits the full tooling so the training runs reproducibly and the result is showable in the end.
 
 ## What's already in place
 
@@ -26,18 +26,18 @@ Plus the engineering that turns an experiment into a project:
 - **Tests** (pytest) + **CI** via GitHub Actions
 - **Docker** + a **Kubernetes Job** (GPU request, persistent checkpoints/logs) for headless training
 - **Metrics, plots** and a **replay mode**
-- A **Grad-CAM vision overlay** — shows what the agent is "looking at"
+- A **Grad-CAM vision overlay** that shows what the agent is "looking at"
 - Optional **Weights & Biases** experiment tracking
 - A **Gradio demo app** + a guide to deploy it as a public **Hugging Face Space**
 
 ## Status & next steps
 
-The infrastructure is in place — the actual training run is the next step:
+The infrastructure is in place. The actual training run is the next step:
 
 1. **Smoke test**: does the agent learn on 1-1 at all? (reward/`x_pos` trending up, loss staying stable)
-2. **Solve level 1-1 consistently** — success criterion defined up front: reach the flag in ≥ 80% of 20 greedy episodes
+2. **Solve level 1-1 consistently**, success criterion defined up front: reach the flag in ≥ 80% of 20 greedy episodes
 3. **Record a vision GIF** of the best run
-4. **Deploy the Gradio demo** as a public Hugging Face Space — a clickable link where the agent plays in the browser
+4. **Deploy the Gradio demo** as a public Hugging Face Space: a clickable link where the agent plays in the browser
 
 ## Why this project
 
