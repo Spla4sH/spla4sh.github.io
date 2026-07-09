@@ -47,19 +47,22 @@ const cat = categoryColor[category] ?? 'var(--color-accent)';
         </a>
       </h3>
     </div>
-    {
-      status === 'wip' ? (
-        <span class="shrink-0 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded border border-amber-500/40 bg-amber-500/10 text-amber-400">
-          {t('projects.status.wip', lang)}
-        </span>
-      ) : (
+    <div class="flex shrink-0 flex-wrap justify-end gap-1.5">
+      {
         featured && (
-          <span class="shrink-0 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+          <span class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
             Featured
           </span>
         )
-      )
-    }
+      }
+      {
+        status === 'wip' && (
+          <span class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded border border-amber-500/40 bg-amber-500/10 text-amber-400">
+            {t('projects.status.wip', lang)}
+          </span>
+        )
+      }
+    </div>
   </div>
 
   <p class="text-sm text-[var(--color-fg-muted)] leading-relaxed flex-1">{description}</p>

@@ -1,43 +1,55 @@
 ---
-title: Super Mario mit Double DQN
-description: Ein Reinforcement-Learning-Projekt für Super Mario Bros (Double DQN), inklusive Trainings-Infrastruktur (Docker/Kubernetes), Tests, Grad-CAM-Vision und Gradio-Demo. Der große Trainingslauf ist der nächste Schritt.
+title: Super Mario mit Deep Reinforcement Learning
+description: "Ein RL-Projekt für Super Mario Bros: Welt 1–3 komplett gelöst (12 von 12 Leveln), 1-1 per selbst gebautem Double DQN, der Rest per PPO. Mit Live-Demo im Browser, Grad-CAM-Vision und reproduzierbarer Trainings-Infrastruktur."
 lang: de
 urlSlug: mario-reinforcement
 category: ml
-stack: [Python, PyTorch, Double DQN, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
+stack: [Python, PyTorch, Double DQN, PPO, Stable-Baselines3, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
 github: https://github.com/Spla4sH/mario-reinforcement
+demo: https://huggingface.co/spaces/Spl4sH/mario-reinforcement
+featured: true
 status: wip
 date: 2026-06-28
 ---
 
 ## Worum geht's
 
-Ein RL-Projekt von Grund auf: Ein Agent soll die NES-Version von Super Mario Bros lernen, nur aus den Pixeln des Spielbildschirms, mit Double Deep Q-Learning. Drumherum die komplette Technik, damit das Training reproduzierbar läuft und das Ergebnis am Ende zeigbar ist.
+Ein RL-Projekt von Grund auf: Ein Agent lernt die NES-Version von Super Mario Bros zu spielen, nur aus den Pixeln des Spielbildschirms. Er sieht denselben Bildschirm wie ein Mensch und lernt selbstständig zu laufen, zu springen und Gegnern auszuweichen. Drumherum die komplette Technik, damit das Training reproduzierbar läuft und das Ergebnis im Browser zeigbar ist.
 
-## Was schon steht
+## Meilenstein: Welt 1–3 komplett
 
-Agent & Trainings-Kern:
+Alle **12 Level der Welten 1 bis 3** sind gelöst. Jedes Level erfüllt dasselbe, vorab definierte Erfolgskriterium: **20 von 20 Greedy-Episoden bis zur Flagge**.
 
-- **Double DQN** (Online-/Target-Netz), CNN über 4 gestapelte Graustufen-Frames (84×84), Experience Replay, Epsilon-Greedy
-- **Reward-Shaping** (`reward.py`) und **Greedy-Evaluation mit Best-Checkpoint** (`evaluate.py`)
+- **Level 1-1** per **selbst implementiertem Double DQN** (Online-/Target-Netz, Experience Replay, Epsilon-Greedy)
+- **Alle übrigen Level** per **PPO** (Stable-Baselines3)
+- Für die Hard-Exploration-Stelle in **2-1** zusätzlich eine **Go-Explore-Savestate-Suche**
 
-Drumherum das Engineering, das ein Experiment zu einem Projekt macht:
+**[→ Live-Demo im Browser ausprobieren](https://huggingface.co/spaces/Spl4sH/mario-reinforcement)** (Hugging-Face-Space, inkl. Grad-CAM-Overlay): ein klickbarer Link, auf dem der trainierte Agent im Browser spielt.
 
-- **Tests** (pytest) + **CI** über GitHub Actions
+## Wie es funktioniert
+
+- **Input:** 4 gestapelte Graustufen-Frames (84×84)
+- **Netz:** CNN (3× Conv + 2× FC) → Q-Werte bzw. Policy über 7 Aktionen (laufen, springen, Kombos)
+- **Belohnung:** Fortschritt nach rechts, Münzen, Überleben (Reward-Shaping in `reward.py`)
+- **Evaluation:** Greedy-Läufe mit Best-Checkpoint (`evaluate.py`)
+
+## Sichtbar gemacht
+
+- **Grad-CAM-Vision-Overlay:** macht sichtbar, worauf das CNN pro Aktion „schaut"
+- **Vision-GIFs** der besten Läufe, **Death-Heatmaps** der Lernfortschritte und ein **Human-vs-AI-Vergleich**
+
+## Das Engineering drumherum
+
+Der Teil, der ein Experiment in ein echtes Projekt verwandelt:
+
+- **Tests** (pytest) + **CI** über GitHub Actions (laufen ohne Emulator/GPU)
 - **Docker** + ein **Kubernetes-Job** (GPU-Request, persistente Checkpoints/Logs) für headless Training
-- **Metriken, Plots** und ein **Replay-Modus**
-- **Grad-CAM-Vision-Overlay**: macht sichtbar, worauf der Agent „schaut"
-- Optionales **Weights & Biases**-Experiment-Tracking
-- Eine **Gradio-Demo-App** + Anleitung, sie als öffentlichen **Hugging-Face-Space** zu deployen
+- Optionales **Weights & Biases**-Experiment-Tracking zum Vergleichen von Läufen und Hyperparameter-Sweeps
+- Eine **Gradio-Demo-App**, deployt als öffentlicher **Hugging-Face-Space**
 
-## Status & nächste Schritte
+## Nächster Schritt
 
-Die Infrastruktur steht. Der eigentliche Trainingslauf ist der nächste Schritt:
-
-1. **Smoke-Test**: Lernt der Agent auf 1-1 überhaupt? (Reward/`x_pos` steigt im Trend, Loss bleibt stabil)
-2. **Level 1-1 konsistent lösen**, Erfolgskriterium vorab definiert: in ≥ 80 % von 20 Greedy-Episoden die Flagge erreichen
-3. **Vision-GIF** des besten Laufs aufnehmen
-4. **Gradio-Demo** als öffentlichen Hugging-Face-Space deployen: ein klickbarer Link, auf dem der Agent im Browser spielt
+Offen ist noch **Level 4-4** – ein Labyrinth mit nichtlinearem Reward-Signal, das über die Standard-Pipeline hinaus eine eigene Behandlung braucht.
 
 ## Warum dieses Projekt
 
