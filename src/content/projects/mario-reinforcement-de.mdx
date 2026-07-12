@@ -1,56 +1,54 @@
 ---
 title: Super Mario mit Deep Reinforcement Learning
-description: "Ein RL-Projekt für Super Mario Bros: Welt 1–3 komplett gelöst (12 von 12 Leveln), 1-1 per selbst gebautem Double DQN, der Rest per PPO. Mit Live-Demo im Browser, Grad-CAM-Vision und reproduzierbarer Trainings-Infrastruktur."
+description: "Ein RL-Projekt für Super Mario Bros: alle 16 Level der Welten 1–4 gelöst (Double DQN + PPO), inklusive zweier Reward-Hacking-Fixes, Go-Explore gegen Hard-Exploration und Live-Demo im Browser."
 lang: de
 urlSlug: mario-reinforcement
 category: ml
-stack: [Python, PyTorch, Double DQN, PPO, Stable-Baselines3, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
+stack: [Python, PyTorch, Double DQN, PPO, Stable-Baselines3, Go-Explore, Behavior Cloning, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
 github: https://github.com/Spla4sH/mario-reinforcement
 demo: https://huggingface.co/spaces/Spl4sH/mario-reinforcement
 featured: true
-status: wip
-date: 2026-06-28
+status: done
+date: 2026-07-12
 ---
 
 ## Worum geht's
 
-Ein RL-Projekt von Grund auf: Ein Agent lernt die NES-Version von Super Mario Bros zu spielen, nur aus den Pixeln des Spielbildschirms. Er sieht denselben Bildschirm wie ein Mensch und lernt selbstständig zu laufen, zu springen und Gegnern auszuweichen. Drumherum die komplette Technik, damit das Training reproduzierbar läuft und das Ergebnis im Browser zeigbar ist.
+Ein RL-Projekt von Grund auf: Ein Agent lernt die NES-Version von Super Mario Bros zu spielen, nur aus den Pixeln des Spielbildschirms. Niemand sagt ihm, *wie* man spielt – nur dass rechts gut ist und Sterben schlecht. Drumherum die komplette Technik, damit das Training reproduzierbar läuft und das Ergebnis im Browser zeigbar ist.
 
-## Meilenstein: Welt 1–3 komplett
+## Ergebnis: Welt 1–4 komplett – 16 von 16 Leveln gelöst
 
-Alle **12 Level der Welten 1 bis 3** sind gelöst. Jedes Level erfüllt dasselbe, vorab definierte Erfolgskriterium: **20 von 20 Greedy-Episoden bis zur Flagge**.
+Jedes Level erfüllt dasselbe, vorab definierte Erfolgskriterium: **20 von 20 Greedy-Episoden bis zur Flagge**.
 
 - **Level 1-1** per **selbst implementiertem Double DQN** (Online-/Target-Netz, Experience Replay, Epsilon-Greedy)
-- **Alle übrigen Level** per **PPO** (Stable-Baselines3)
-- Für die Hard-Exploration-Stelle in **2-1** zusätzlich eine **Go-Explore-Savestate-Suche**
+- **Alle übrigen Level** per **PPO** (Stable-Baselines3) – die erarbeitete Standard-Pipeline (VecNormalize, LR-Decay, 16 parallele Envs) löste zuletzt ein neues Level in ~40 Minuten Training
+- Für die zwei Stellen, an denen reines RL scheiterte (Trampolin-Turm in 2-1, Labyrinth in 4-4): **Go-Explore-Savestate-Suche + Behavior Cloning**
+- Alle 16 trainierten Modelle als [Release v1.0](https://github.com/Spla4sH/mario-reinforcement/releases/tag/v1.0) veröffentlicht
 
-**[→ Live-Demo im Browser ausprobieren](https://huggingface.co/spaces/Spl4sH/mario-reinforcement)** (Hugging-Face-Space, inkl. Grad-CAM-Overlay): ein klickbarer Link, auf dem der trainierte Agent im Browser spielt.
+**[→ Live-Demo im Browser ausprobieren](https://huggingface.co/spaces/Spl4sH/mario-reinforcement)** (Hugging-Face-Space, inkl. Grad-CAM-Overlay)
 
-## Wie es funktioniert
+## Die lehrreichste Etappe: Reward-Hacking im Labyrinth
 
-- **Input:** 4 gestapelte Graustufen-Frames (84×84)
-- **Netz:** CNN (3× Conv + 2× FC) → Q-Werte bzw. Policy über 7 Aktionen (laufen, springen, Kombos)
-- **Belohnung:** Fortschritt nach rechts, Münzen, Überleben (Reward-Shaping in `reward.py`)
-- **Evaluation:** Greedy-Läufe mit Best-Checkpoint (`evaluate.py`)
+Level 4-4 hat den Reward **zweimal ausgetrickst**:
+
+1. **Loop-Farming:** Falsche Wege werfen Mario zurück, große x-Rücksprünge kosten keinen Reward – also lief der Agent endlos im Kreis und sammelte 13.824 Reward bei 0 % Flagge. Fix: ein `ProgressReward`-Wrapper, der nur *neue* x-Maxima belohnt.
+2. **16-Bit-Overflow:** Danach farmte der Agent einen Emulator-Glitch, bei dem `x_pos` beim Screen-Übergang kurz auf 65535 springt – 57k Reward für einen Integer-Überlauf. Fix: nur physikalisch plausible Schritte zählen.
+
+Beide Fixes wurden vorab am Exploit-Modell gemessen, bevor neue Rechenzeit investiert wurde. Den Weg durchs Labyrinth fand am Ende eine **mehrstufige Savestate-Suche**, deren Lösungssequenz per Behavior Cloning in die Policy geklont wurde – verifiziert wird dabei jede Epoche greedy, nicht über die Imitations-Trefferquote.
 
 ## Sichtbar gemacht
 
-- **Grad-CAM-Vision-Overlay:** macht sichtbar, worauf das CNN pro Aktion „schaut"
-- **Vision-GIFs** der besten Läufe, **Death-Heatmaps** der Lernfortschritte und ein **Human-vs-AI-Vergleich**
+- **Grad-CAM-Vision-Overlay:** macht sichtbar, worauf das CNN pro Aktion „schaut" – inklusive **DQN-vs-PPO-Vergleich**: zwei Algorithmen, zwei Blickweisen auf dasselbe Level
+- **Death-Heatmaps:** Todespositionen aus über 5.400 Trainingsepisoden über einem Level-Panorama – man sieht, wie das Level von links nach rechts „erobert" wird
+- **Mensch vs. KI:** eigenen Lauf aufnehmen und als Side-by-Side-GIF gegen den Agenten antreten, gegen jedes der 16 Level
 
 ## Das Engineering drumherum
 
-Der Teil, der ein Experiment in ein echtes Projekt verwandelt:
-
 - **Tests** (pytest) + **CI** über GitHub Actions (laufen ohne Emulator/GPU)
-- **Docker** + ein **Kubernetes-Job** (GPU-Request, persistente Checkpoints/Logs) für headless Training
-- Optionales **Weights & Biases**-Experiment-Tracking zum Vergleichen von Läufen und Hyperparameter-Sweeps
-- Eine **Gradio-Demo-App**, deployt als öffentlicher **Hugging-Face-Space**
-
-## Nächster Schritt
-
-Offen ist noch **Level 4-4** – ein Labyrinth mit nichtlinearem Reward-Signal, das über die Standard-Pipeline hinaus eine eigene Behandlung braucht.
+- **Docker** + **Kubernetes**: ein Hyperparameter-Sweep lief real als **vier parallele K8s-Jobs** in einem kind-Cluster – inklusive der Lektionen dahinter (Build-Kontext, OOMKilled durch den Replay-Buffer)
+- Optionales **Weights & Biases**-Experiment-Tracking
+- Eine **Gradio-Demo-App**, deployt als öffentlicher **Hugging-Face-Space** mit allen 16 Leveln
 
 ## Warum dieses Projekt
 
-RL versteht man nur, wenn man Replay Buffer, Target-Netze und Reward-Design einmal selbst baut und debuggt. Dazu kommt hier der Teil, der ein Experiment in ein echtes Projekt verwandelt: reproduzierbar testen, containerisieren und am Ende als Browser-Demo zeigbar machen.
+RL versteht man nur, wenn man Replay Buffer, Target-Netze und Reward-Design einmal selbst baut und debuggt. Jedes Level zeigte eine andere RL-„Krankheit" mit eigenem Gegenmittel: Instabilität → Reward-Normalisierung, vorzeitige Konvergenz → mehr Entropie, Hard Exploration → Savestate-Suche, Reward-Hacking → messbare Reward-Fixes. Dazu der Teil, der ein Experiment in ein echtes Projekt verwandelt: reproduzierbar testen, containerisieren und als Browser-Demo zeigbar machen.

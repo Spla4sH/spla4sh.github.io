@@ -1,56 +1,54 @@
 ---
 title: Super Mario with Deep Reinforcement Learning
-description: "An RL project for Super Mario Bros: Worlds 1–3 fully solved (12 of 12 levels), 1-1 via a hand-built Double DQN and the rest via PPO. With an in-browser live demo, Grad-CAM vision and reproducible training infrastructure."
+description: "An RL project for Super Mario Bros: all 16 levels of Worlds 1–4 solved (Double DQN + PPO), including two reward-hacking fixes, Go-Explore for hard exploration and a live in-browser demo."
 lang: en
 urlSlug: mario-reinforcement
 category: ml
-stack: [Python, PyTorch, Double DQN, PPO, Stable-Baselines3, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
+stack: [Python, PyTorch, Double DQN, PPO, Stable-Baselines3, Go-Explore, Behavior Cloning, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
 github: https://github.com/Spla4sH/mario-reinforcement
 demo: https://huggingface.co/spaces/Spl4sH/mario-reinforcement
 featured: true
-status: wip
-date: 2026-06-28
+status: done
+date: 2026-07-12
 ---
 
 ## What it's about
 
-An RL project built from scratch: an agent learns to play the NES version of Super Mario Bros purely from the pixels of the game screen. It sees the same screen a human does and learns on its own to run, jump and dodge enemies. Around it sits the full tooling so the training runs reproducibly and the result is showable in the browser.
+An RL project built from scratch: an agent learns to play the NES version of Super Mario Bros purely from the pixels of the game screen. Nobody tells it *how* to play – only that going right is good and dying is bad. Around it sits the full tooling so the training runs reproducibly and the result is showable in the browser.
 
-## Milestone: Worlds 1–3 complete
+## Result: Worlds 1–4 complete – 16 of 16 levels solved
 
-All **12 levels across Worlds 1 to 3** are solved. Every level meets the same, up-front success criterion: **20 of 20 greedy episodes reaching the flag**.
+Every level meets the same, up-front success criterion: **20 of 20 greedy episodes reaching the flag**.
 
 - **Level 1-1** via a **hand-implemented Double DQN** (online/target network, experience replay, epsilon-greedy)
-- **All remaining levels** via **PPO** (Stable-Baselines3)
-- For the hard-exploration spot in **2-1**, an additional **Go-Explore savestate search**
+- **All remaining levels** via **PPO** (Stable-Baselines3) – the standard pipeline built up along the way (VecNormalize, LR decay, 16 parallel envs) ended up solving a new level in ~40 minutes of training
+- For the two spots where pure RL failed (the trampoline tower in 2-1, the labyrinth in 4-4): **Go-Explore savestate search + behavior cloning**
+- All 16 trained models published as [Release v1.0](https://github.com/Spla4sH/mario-reinforcement/releases/tag/v1.0)
 
-**[→ Try the live demo in your browser](https://huggingface.co/spaces/Spl4sH/mario-reinforcement)** (Hugging Face Space, incl. Grad-CAM overlay): a clickable link where the trained agent plays in the browser.
+**[→ Try the live demo in your browser](https://huggingface.co/spaces/Spl4sH/mario-reinforcement)** (Hugging Face Space, incl. Grad-CAM overlay)
 
-## How it works
+## The most instructive stretch: reward hacking in the labyrinth
 
-- **Input:** 4 stacked grayscale frames (84×84)
-- **Network:** a CNN (3× conv + 2× FC) → Q-values / policy over 7 actions (run, jump, combos)
-- **Reward:** progress to the right, coins, survival (reward shaping in `reward.py`)
-- **Evaluation:** greedy runs with a best-checkpoint (`evaluate.py`)
+Level 4-4 gamed the reward **twice**:
+
+1. **Loop farming:** wrong paths throw Mario back, and large x-position jumps backwards cost no reward – so the agent ran in circles forever, collecting 13,824 reward at a 0% flag rate. Fix: a `ProgressReward` wrapper that only rewards *new* x-maxima.
+2. **16-bit overflow:** next, the agent farmed an emulator glitch where `x_pos` briefly jumps to 65535 on screen transitions – 57k reward for an integer overflow. Fix: only count physically plausible steps.
+
+Both fixes were measured against the exploiting model up front, before investing new compute. The path through the labyrinth was finally found by a **multi-stage savestate search**, whose solution sequence was cloned into the policy via behavior cloning – verified with a greedy run every epoch, not by imitation accuracy.
 
 ## Made visible
 
-- **Grad-CAM vision overlay:** shows what the CNN is "looking at" for each action
-- **Vision GIFs** of the best runs, **death heatmaps** of the learning progress, and a **human-vs-AI comparison**
+- **Grad-CAM vision overlay:** shows what the CNN is "looking at" for each action – including a **DQN-vs-PPO comparison**: two algorithms, two ways of looking at the same level
+- **Death heatmaps:** death positions from over 5,400 training episodes drawn over a level panorama – you can watch the level being "conquered" from left to right
+- **Human vs. AI:** record your own run and race the agent as a side-by-side GIF, on any of the 16 levels
 
 ## The engineering around it
 
-The part that turns an experiment into a real project:
-
 - **Tests** (pytest) + **CI** via GitHub Actions (run without emulator/GPU)
-- **Docker** + a **Kubernetes Job** (GPU request, persistent checkpoints/logs) for headless training
-- Optional **Weights & Biases** experiment tracking to compare runs and hyperparameter sweeps
-- A **Gradio demo app**, deployed as a public **Hugging Face Space**
-
-## Next step
-
-Still open is **Level 4-4** – a labyrinth with a non-linear reward signal that needs its own handling beyond the standard pipeline.
+- **Docker** + **Kubernetes**: a hyperparameter sweep actually ran as **four parallel K8s Jobs** in a kind cluster – including the lessons behind it (build context, OOMKilled by the replay buffer)
+- Optional **Weights & Biases** experiment tracking
+- A **Gradio demo app**, deployed as a public **Hugging Face Space** with all 16 levels
 
 ## Why this project
 
-You only understand RL by building and debugging replay buffers, target networks and reward design yourself once. On top of that comes the part that turns an experiment into a real project: testing it reproducibly, containerizing it, and making it showable as a browser demo in the end.
+You only understand RL by building and debugging replay buffers, target networks and reward design yourself once. Every level exhibited a different RL "disease" with its own remedy: instability → reward normalization, premature convergence → more entropy, hard exploration → savestate search, reward hacking → measurable reward fixes. On top of that comes the part that turns an experiment into a real project: testing it reproducibly, containerizing it, and making it showable as a browser demo.

@@ -1,36 +1,32 @@
 ---
 title: GitOps-Lab mit ArgoCD App-of-Apps
-description: Ein lokales Kubernetes-Lab nach dem App-of-Apps-Pattern. Die Architektur ist dokumentiert, die Umsetzung mit ArgoCD, Helm und CI ist in Arbeit.
+description: "Ein lokales Kubernetes-Lab nach dem App-of-Apps-Pattern, das end-to-end läuft: ArgoCD gleicht den Cluster gegen das Git-Repo ab – Ingress, cert-manager, Monitoring und eine Demo-App inklusive, die CI baut die Images nach GHCR."
 lang: de
 urlSlug: platform-gitops
 category: devops
-stack: [Kubernetes, ArgoCD, Helm, Go, kind, GitHub Actions, Docker, GHCR]
+stack: [Kubernetes, ArgoCD, Helm, Go, kind, GitHub Actions, Docker, GHCR, ingress-nginx, cert-manager, Grafana]
 github: https://github.com/Spla4sH/platform-gitops
 status: wip
-date: 2026-04-28
+date: 2026-07-10
 ---
 
 ## Worum geht's
 
 Ich will das App-of-Apps-Pattern von ArgoCD nicht nur in der Theorie verstehen, sondern wirklich anwenden, auf einem realistischen Setup, das so auch in Produktion laufen könnte. Das Lab besteht aus zwei Repositories: [demo-app](https://github.com/Spla4sH/demo-app) für den Anwendungscode (Go-API + nginx-Frontend) und [platform-gitops](https://github.com/Spla4sH/platform-gitops) als GitOps Source of Truth, die ArgoCD überwacht.
 
-## Das Design
+## Was läuft
 
-Die Zielarchitektur ist in der [ARCHITECTURE.md](https://github.com/Spla4sH/platform-gitops/blob/main/ARCHITECTURE.md) dokumentiert:
+Der Stack läuft end-to-end: `kind create cluster` → ArgoCD installieren → Root-App anwenden, den Rest zieht ArgoCD selbst aus dem Repo. Danach sind Demo-App, ArgoCD-UI und Grafana per Ingress im Browser erreichbar.
 
-- **kind**-Cluster, lokal in Docker, mit Port-Mappings für 80/443
-- **App-of-Apps**: eine Root-Application scannt das Apps-Verzeichnis: Infrastruktur (ingress-nginx, cert-manager, sealed-secrets, Monitoring) und Workloads sind je eigene Application-Manifeste
-- **In-Repo Helm-Chart** für die Demo-App
-- **CI** in `demo-app` baut Container-Images nach GHCR und stößt den Image-Bump im GitOps-Repo an
+- **App-of-Apps**: eine Root-Application unter `clusters/local/bootstrap/` zieht je eine Application pro Infra-Komponente (**ingress-nginx, cert-manager, sealed-secrets, Monitoring/Grafana**) und pro Workload
+- **In-Repo Helm-Chart** für die Demo-App – Deployments, Services, Ingress und NetworkPolicy, mit Security-Context (non-root, verifizierbar)
+- **CI** in `demo-app` baut die Container-Images (Frontend + Go-API) nach **GHCR**, getaggt mit `latest` und Commit-SHA; das GitOps-Repo referenziert sie über `values.yaml`
+- Die Architektur ist in der [ARCHITECTURE.md](https://github.com/Spla4sH/platform-gitops/blob/main/ARCHITECTURE.md) dokumentiert
 
-## Status & nächste Schritte
+## Nächste Schritte
 
-Architektur-Dokumentation und kind-Cluster-Konfiguration stehen, die Repos sind aufgesetzt. Jetzt kommt die eigentliche Implementierung:
-
-1. Bootstrap-Skript (kind create → ArgoCD-Install → Root-App)
-2. Application-Manifeste für Infra und Workloads
-3. Helm-Chart für die Demo-App
-4. CI-Workflow mit Image-Build und automatischem Image-Bump
+1. **Automatischer Image-Bump**: Die CI baut und pusht bereits, der Versions-Bump im GitOps-Repo passiert noch per Hand – der letzte Schritt zur geschlossenen Pipeline
+2. Sealed Secrets und Monitoring-Dashboards in der Praxis nutzen, nicht nur deployen
 
 ## Warum dieses Projekt
 
