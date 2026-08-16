@@ -9,6 +9,8 @@ interface Props {
   title?: string;
   description?: string;
   lang?: Lang;
+  /** Path under /public; falls back to the generic site card */
+  ogImage?: string;
 }
 
 const url = Astro.url;
@@ -19,7 +21,7 @@ const pageTitle = Astro.props.title
 const description = Astro.props.description ?? t('site.description', lang);
 const site = Astro.site ?? url.origin;
 const canonicalUrl = new URL(url.pathname, site).toString();
-const ogImageUrl = new URL('/og.png', site).toString();
+const ogImageUrl = new URL(Astro.props.ogImage ?? '/og.png', site).toString();
 const alternateDe = new URL(switchLangPath(url, 'de'), site).toString();
 const alternateEn = new URL(switchLangPath(url, 'en'), site).toString();
 ---

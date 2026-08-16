@@ -1,0 +1,52 @@
+---
+import { t, localizedPath, routeNames, type Lang } from '../lib/i18n';
+
+interface Props {
+  lang: Lang;
+  slug: string;
+  title: string;
+  category: 'devops' | 'ml' | 'data' | 'web' | 'research';
+}
+const { lang, slug, title, category } = Astro.props;
+const routes = routeNames[lang];
+const href = `${localizedPath(routes.projects, lang)}/${slug}`;
+
+const categoryColor: Record<string, string> = {
+  devops: '#60a5fa',
+  ml: '#a78bfa',
+  data: '#fbbf24',
+  web: '#2dd4bf',
+  research: '#fb7185',
+};
+const cat = categoryColor[category] ?? 'var(--color-accent)';
+---
+
+<nav
+  style={`--cat: ${cat}`}
+  class="next-project mt-16 pt-8 border-t border-[var(--color-border)]"
+  aria-label={t('projects.next', lang)}
+>
+  <a href={href} class="group flex items-center justify-between gap-4 no-underline">
+    <span class="min-w-0">
+      <span class="block text-xs font-mono uppercase tracking-wider text-[var(--color-fg-dim)] mb-1.5">
+        {t('projects.next', lang)}
+      </span>
+      <span class="next-title block text-xl font-semibold text-[var(--color-fg)] transition-colors">
+        {title}
+      </span>
+    </span>
+    <span class="arrow shrink-0 text-[var(--color-fg-dim)] transition-transform">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </span>
+  </a>
+</nav>
+
+<style>
+  .next-project a:hover .next-title {
+    color: var(--cat);
+  }
+  .next-project a:hover .arrow {
+    color: var(--cat);
+    transform: translateX(4px);
+  }
+</style>

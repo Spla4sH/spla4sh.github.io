@@ -2,23 +2,36 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import TechBadge from '../../../components/TechBadge.astro';
+import NextProject from '../../../components/NextProject.astro';
 import { t, localizedPath, routeNames } from '../../../lib/i18n';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', (e) => e.data.lang === 'en' && !e.data.draft);
-  return projects.map((project) => ({
+  // Same order the overview uses, so "next" follows the sequence people scrolled
+  const ordered = projects.sort((a, b) => {
+    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+    if (a.data.status !== b.data.status) return a.data.status === 'done' ? -1 : 1;
+    return b.data.date.getTime() - a.data.date.getTime();
+  });
+  return ordered.map((project, i) => ({
     params: { slug: project.data.urlSlug },
-    props: { project },
+    // Wraps around, so the last project still leads somewhere
+    props: { project, next: ordered[(i + 1) % ordered.length] },
   }));
 }
 
-const { project } = Astro.props;
+const { project, next } = Astro.props;
 const { Content } = await render(project);
 const lang = 'en' as const;
 const routes = routeNames[lang];
 ---
 
-<BaseLayout lang={lang} title={project.data.title} description={project.data.description}>
+<BaseLayout
+  lang={lang}
+  title={project.data.title}
+  description={project.data.description}
+  ogImage={`/og/${lang}-${project.data.urlSlug}.png`}
+>
   <article class="container-prose">
     <a
       href={localizedPath(routes.projects, lang)}
@@ -78,6 +91,17 @@ const routes = routeNames[lang];
     <div class="prose-content text-[var(--color-fg)] leading-relaxed">
       <Content />
     </div>
+
+    {
+      next && next.data.urlSlug !== project.data.urlSlug && (
+        <NextProject
+          lang={lang}
+          slug={next.data.urlSlug}
+          title={next.data.title}
+          category={next.data.category}
+        />
+      )
+    }
   </article>
 </BaseLayout>
 
