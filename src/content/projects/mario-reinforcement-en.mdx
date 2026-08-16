@@ -1,54 +1,69 @@
 ---
 title: Super Mario with Deep Reinforcement Learning
-description: "An RL project for Super Mario Bros: all 16 levels of Worlds 1–4 solved (Double DQN + PPO), including two reward-hacking fixes, Go-Explore for hard exploration and a live in-browser demo."
+description: "An RL project for Super Mario Bros: all 32 levels solved, the game finished end to end (Double DQN + PPO), with Go-Explore, behavior cloning and transfer learning – and five metrics that measured something other than what was meant."
 lang: en
 urlSlug: mario-reinforcement
 category: ml
-stack: [Python, PyTorch, Double DQN, PPO, Stable-Baselines3, Go-Explore, Behavior Cloning, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
+stack: [Python, PyTorch, Double DQN, PPO, Stable-Baselines3, Go-Explore, Behavior Cloning, Transfer Learning, Docker, Kubernetes, Gradio, Grad-CAM, Weights & Biases, GitHub Actions, pytest, OpenAI Gym, nes-py, NumPy]
 github: https://github.com/Spla4sH/mario-reinforcement
 demo: https://huggingface.co/spaces/Spl4sH/mario-reinforcement
 featured: true
 status: done
-date: 2026-07-12
+date: 2026-08-04
 ---
 
 ## What it's about
 
 An RL project built from scratch: an agent learns to play the NES version of Super Mario Bros purely from the pixels of the game screen. Nobody tells it *how* to play – only that going right is good and dying is bad. Around it sits the full tooling so the training runs reproducibly and the result is showable in the browser.
 
-## Result: Worlds 1–4 complete – 16 of 16 levels solved
+## Result: Super Mario Bros finished end to end – 32 of 32 levels solved
 
 Every level meets the same, up-front success criterion: **20 of 20 greedy episodes reaching the flag**.
 
 - **Level 1-1** via a **hand-implemented Double DQN** (online/target network, experience replay, epsilon-greedy)
-- **All remaining levels** via **PPO** (Stable-Baselines3) – the standard pipeline built up along the way (VecNormalize, LR decay, 16 parallel envs) ended up solving a new level in ~40 minutes of training
-- For the two spots where pure RL failed (the trampoline tower in 2-1, the labyrinth in 4-4): **Go-Explore savestate search + behavior cloning**
-- All 16 trained models published as [Release v1.0](https://github.com/Spla4sH/mario-reinforcement/releases/tag/v1.0)
+- **All remaining 31 levels** via **PPO** (Stable-Baselines3) – the standard pipeline built up along the way (VecNormalize, LR decay, 16 parallel envs) solves a new level in ~40 minutes of training
+- For the spots where pure RL failed, a dedicated tool each: **Go-Explore savestate search** (the trampoline tower in 2-1, the labyrinths in 4-4 and 7-4, World 8), **behavior cloning** and **transfer learning** between structurally identical levels (5-3)
+- All 32 trained models published as releases ([v1.0](https://github.com/Spla4sH/mario-reinforcement/releases/tag/v1.0) through [v1.3](https://github.com/Spla4sH/mario-reinforcement/releases/tag/v1.3))
 
-**[→ Try the live demo in your browser](https://huggingface.co/spaces/Spl4sH/mario-reinforcement)** (Hugging Face Space, incl. Grad-CAM overlay)
+**[→ Try the live demo in your browser](https://huggingface.co/spaces/Spl4sH/mario-reinforcement)** (Hugging Face Space, all 32 levels, incl. Grad-CAM overlay)
 
-## The most instructive stretch: reward hacking in the labyrinth
+The honest caveat: the environment is deterministic under greedy play. "20/20" means **reliably reproducible**, not robust to perturbation.
 
-Level 4-4 gamed the reward **twice**:
+## The through-line: five metrics that measured something other than what was meant
 
-1. **Loop farming:** wrong paths throw Mario back, and large x-position jumps backwards cost no reward – so the agent ran in circles forever, collecting 13,824 reward at a 0% flag rate. Fix: a `ProgressReward` wrapper that only rewards *new* x-maxima.
-2. **16-bit overflow:** next, the agent farmed an emulator glitch where `x_pos` briefly jumps to 65535 on screen transitions – 57k reward for an integer overflow. Fix: only count physically plausible steps.
+The project's real subject only surfaced while building it – and it ran underneath every hard level:
 
-Both fixes were measured against the exploiting model up front, before investing new compute. The path through the labyrinth was finally found by a **multi-stage savestate search**, whose solution sequence was cloned into the policy via behavior cloning – verified with a greedy run every epoch, not by imitation accuracy.
+1. **Loop farming (4-4):** wrong paths throw Mario back, and large x-position jumps backwards cost no reward – so the agent ran in circles forever: 13,824 reward at a 0% flag rate. Fix: a `ProgressReward` wrapper that only rewards *new* x-maxima.
+2. **16-bit overflow (4-4):** next, the agent farmed an emulator glitch where `x_pos` briefly jumps to 65535 on screen transitions – 57k reward for an integer overflow. Fix: only count physically plausible steps.
+3. **Dead candidates (5-3):** this time it wasn't the agent but **my own search code**. During a fall `x_pos` keeps climbing because Mario drifts forward – so a deeper fall beat any safe landing, and the search reported a "breakthrough" for a candidate that was dead.
+4. **Maximum instead of end position (7-4):** Go-Explore scored candidates by the furthest point reached – in a loop level, an excursion that ended in a throw-back therefore counted as success.
+5. **A blind instrument (8-4):** in the loop section `x_pos` simply keeps counting while running in circles – reward, `ProgressReward` and the Go-Explore criterion all lied at once. My replacement signal was just as blind: I searched 40,000 candidates with the wrong RAM byte (`$0760` instead of `$074E`).
+
+Every fix was **measured against the exploiting model up front**, before investing new compute (13,824 → 1,574 and 64,735 → 221 respectively). The common denominator: the agent optimizes exactly what is measured – never what was meant. The same gap costs a level here; in real systems it's called the alignment problem.
+
+## The most instructive stretches
+
+- **5-3: transfer beats search.** The agent froze at exactly x 783 – the same spot where 1-3 had failed, because Nintendo built both treetop levels from the same block. Four approaches failed (6M steps, entropy boost, 32,000 Go-Explore candidates, 168 scripted jump variants). Then the **1-3 model was simply let loose on 5-3**: x 1606 on the first try, fine-tuning, 20/20. In **6-3** the same trick was tested and discarded – a similar level *type* is not a twin, and the test cost two minutes instead of hours of compute.
+- **7-4, the hardest level:** a labyrinth castle with five gates, solved via four search stages building on each other and a cloned path 762 steps long. The breakthrough came not from more search but from a **screenshot**: after 20,000 stuck candidates, an image showed the savestate sat right on the edge of a pit. With 100 px more run-up, the spot fell after 14 candidates.
+- **8-4, the finale:** needed an **eighth action**. `SIMPLE_MOVEMENT` has no ↓, and without ↓ you cannot enter a pipe – so the level was *fundamentally unsolvable*, no matter how long you train. Added as an opt-in switch so the 31 existing models stay untouched.
+- **8-2, the most instructive contradiction:** a resume run improved training reward while making greedy performance worse. Both numbers were right – training reward averages over 16 stochastic envs, the greedy run is a single deterministic pass.
+
+That turned into a diagnostic rule of thumb: *curve still rising → keep training; curve frozen → savestate search; know a structurally identical solved level → try its policy first.*
 
 ## Made visible
 
 - **Grad-CAM vision overlay:** shows what the CNN is "looking at" for each action – including a **DQN-vs-PPO comparison**: two algorithms, two ways of looking at the same level
-- **Death heatmaps:** death positions from over 5,400 training episodes drawn over a level panorama – you can watch the level being "conquered" from left to right
-- **Human vs. AI:** record your own run and race the agent as a side-by-side GIF, on any of the 16 levels
+- **Death heatmaps:** death positions from 5,409 training episodes drawn over a level panorama – you can watch the level being "conquered" from left to right
+- **When the agent fails:** three GIFs of the states before the fix – reward hacking (4-4), giving up in front of a gate (7-4), standing still out of safety (8-2). Each case led to a concrete fix in the code.
+- **Human vs. AI:** record your own run and race the agent as a side-by-side GIF, on any of the 32 levels
 
 ## The engineering around it
 
 - **Tests** (pytest) + **CI** via GitHub Actions (run without emulator/GPU)
-- **Docker** + **Kubernetes**: a hyperparameter sweep actually ran as **four parallel K8s Jobs** in a kind cluster – including the lessons behind it (build context, OOMKilled by the replay buffer)
+- **Docker** + **Kubernetes**: a hyperparameter sweep actually ran as **four parallel K8s Jobs** in a kind cluster – including the lessons behind it (a 24 GB build context, OOMKilled by the replay buffer)
 - Optional **Weights & Biases** experiment tracking
-- A **Gradio demo app**, deployed as a public **Hugging Face Space** with all 16 levels
+- A **Gradio demo app**, deployed as a public **Hugging Face Space** with all 32 levels. The Space serves precomputed runs – on foreign hardware the deterministic trajectory diverges, because different BLAS rounding flips a close argmax. "Deterministically solved" holds per machine.
 
 ## Why this project
 
-You only understand RL by building and debugging replay buffers, target networks and reward design yourself once. Every level exhibited a different RL "disease" with its own remedy: instability → reward normalization, premature convergence → more entropy, hard exploration → savestate search, reward hacking → measurable reward fixes. On top of that comes the part that turns an experiment into a real project: testing it reproducibly, containerizing it, and making it showable as a browser demo.
+You only understand RL by building and debugging replay buffers, target networks and reward design yourself once. Every level exhibited a different RL "disease" with its own remedy: instability → reward normalization, premature convergence → more entropy, hard exploration → savestate search, reward hacking → measurable reward fixes. The real lesson, though, sits in those five metric bugs: when a search finds nothing, the first question isn't "how do I search better?" but "would I even notice a hit?". On top of that comes the part that turns an experiment into a real project: testing it reproducibly, containerizing it, and making it showable as a browser demo.
