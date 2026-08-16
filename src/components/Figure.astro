@@ -1,0 +1,86 @@
+---
+interface Props {
+  /** Path under /public, e.g. /projects/mario/vision.mp4 */
+  src: string;
+  alt: string;
+  /** Rendered below the media; supports inline markup via the default slot instead */
+  caption?: string;
+  /** Pixel-art media is upscaled with nearest-neighbour so it stays crisp */
+  pixelated?: boolean;
+  /** Hero figures load eagerly, everything else waits until it scrolls into view */
+  eager?: boolean;
+}
+const { src, alt, caption, pixelated = true, eager = false } = Astro.props;
+const isVideo = src.endsWith('.mp4');
+---
+
+<figure class="my-8">
+  {
+    isVideo ? (
+      <video
+        src={src}
+        class:list={['w-full rounded-lg border border-[var(--color-border)]', pixelated && 'pixelated']}
+        aria-label={alt}
+        muted
+        loop
+        playsinline
+        preload={eager ? 'auto' : 'none'}
+        autoplay={eager}
+        data-autoplay-in-view
+      />
+    ) : (
+      <img
+        src={src}
+        alt={alt}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+        class:list={['w-full rounded-lg border border-[var(--color-border)]', pixelated && 'pixelated']}
+      />
+    )
+  }
+  {
+    (caption || Astro.slots.has('default')) && (
+      <figcaption class="mt-3 text-sm text-[var(--color-fg-dim)] leading-relaxed">
+        {caption}
+        <slot />
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .pixelated {
+    image-rendering: pixelated;
+    background-color: var(--color-surface);
+  }
+</style>
+
+<script>
+  // Only play what is actually on screen: a project page carries several clips,
+  // and letting them all run at once burns battery for nothing.
+  function initInViewVideos() {
+    const videos = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay-in-view]');
+    if (!videos.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {
+              /* autoplay can be blocked; the controls-free clip is decorative */
+            });
+          } else {
+            video.pause();
+          }
+        }
+      },
+      { rootMargin: '200px 0px' },
+    );
+
+    videos.forEach((video) => observer.observe(video));
+  }
+
+  initInViewVideos();
+  document.addEventListener('astro:page-load', initInViewVideos);
+</script>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  /** Direct Space host, e.g. https://spl4sh-mario-reinforcement.hf.space */
+  src: string;
+  /** Canonical page the embed mirrors, linked as a fallback */
+  href: string;
+  title: string;
+  note?: string;
+  height?: number;
+}
+const { src, href, title, note, height = 720 } = Astro.props;
+---
+
+<div class="my-8 rounded-lg border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)]">
+  <div class="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[var(--color-border)]">
+    <span class="text-xs font-mono uppercase tracking-wider text-[var(--color-accent)]">{title}</span>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener"
+      class="text-xs text-[var(--color-fg-dim)] hover:text-[var(--color-accent)] no-underline shrink-0"
+    >
+      Hugging Face ↗
+    </a>
+  </div>
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    referrerpolicy="no-referrer"
+    allow="fullscreen"
+    class="w-full block bg-[var(--color-bg)]"
+    style={`height: ${height}px`}></iframe>
+</div>
+{note && <p class="-mt-4 mb-8 text-sm text-[var(--color-fg-dim)] leading-relaxed">{note}</p>}

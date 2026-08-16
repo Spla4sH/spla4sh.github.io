@@ -13,8 +13,10 @@ interface Props {
   date: Date;
   featured?: boolean;
   status?: 'wip' | 'done';
+  cover?: string;
+  coverAlt?: string;
 }
-const { lang, slug, title, description, category, stack, github, date, featured, status = 'done' } = Astro.props;
+const { lang, slug, title, description, category, stack, github, date, featured, status = 'done', cover, coverAlt } = Astro.props;
 const routes = routeNames[lang];
 const detailHref = `${localizedPath(routes.projects, lang)}/${slug}`;
 const year = date.getFullYear();
@@ -35,6 +37,17 @@ const cat = categoryColor[category] ?? 'var(--color-accent)';
   class="project-card group relative flex flex-col gap-4 p-6 pl-7 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors"
 >
   <span class="cat-bar absolute left-0 top-5 bottom-5 w-[3px] rounded-full"></span>
+  {
+    cover && (
+      <img
+        src={cover}
+        alt={coverAlt ?? ''}
+        loading="lazy"
+        decoding="async"
+        class="cover -mt-1 h-36 w-full rounded-md object-cover"
+      />
+    )
+  }
   <div class="flex items-start justify-between gap-3">
     <div>
       <p class="text-xs font-mono uppercase tracking-wider mb-2">
@@ -90,6 +103,15 @@ const cat = categoryColor[category] ?? 'var(--color-accent)';
 <style>
   .cat-label {
     color: var(--cat);
+  }
+  .cover {
+    image-rendering: pixelated;
+    border: 1px solid var(--color-border);
+    object-position: center 60%;
+    transition: border-color 0.2s ease;
+  }
+  .project-card:hover .cover {
+    border-color: color-mix(in srgb, var(--cat) 45%, var(--color-border));
   }
   .cat-bar {
     background-color: color-mix(in srgb, var(--cat) 55%, transparent);

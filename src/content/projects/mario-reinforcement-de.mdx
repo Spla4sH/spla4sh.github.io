@@ -10,7 +10,19 @@ demo: https://huggingface.co/spaces/Spl4sH/mario-reinforcement
 featured: true
 status: done
 date: 2026-08-04
+cover: /projects/mario/cover.webp
+coverAlt: "Level 1-1 mit Grad-CAM-Overlay: das rote Leuchten zeigt, worauf das neuronale Netz achtet"
 ---
+
+import Figure from '../../components/Figure.astro';
+import DemoEmbed from '../../components/DemoEmbed.astro';
+
+<Figure
+  src="/projects/mario/vision.mp4"
+  alt="Grad-CAM-Overlay eines Greedy-Durchlaufs von Level 1-1"
+  eager
+  caption="Der trainierte Agent löst Level 1-1. Das rote Leuchten (Grad-CAM) zeigt, worauf das CNN bei jeder einzelnen Aktion achtet."
+/>
 
 ## Worum geht's
 
@@ -25,9 +37,22 @@ Jedes Level erfüllt dasselbe, vorab definierte Erfolgskriterium: **20 von 20 Gr
 - Für die Stellen, an denen reines RL scheiterte, je ein eigenes Werkzeug: **Go-Explore-Savestate-Suche** (Trampolin-Turm 2-1, Labyrinthe 4-4 und 7-4, Welt 8), **Behavior Cloning** und **Transfer Learning** zwischen baugleichen Leveln (5-3)
 - Alle 32 trainierten Modelle als Releases veröffentlicht ([v1.0](https://github.com/Spla4sH/mario-reinforcement/releases/tag/v1.0) bis [v1.3](https://github.com/Spla4sH/mario-reinforcement/releases/tag/v1.3))
 
-**[→ Live-Demo im Browser ausprobieren](https://huggingface.co/spaces/Spl4sH/mario-reinforcement)** (Hugging-Face-Space, alle 32 Level, inkl. Grad-CAM-Overlay)
+<Figure
+  src="/projects/mario/ppo_8-4.mp4"
+  alt="Der PPO-Agent besiegt Bowser in Level 8-4 und erreicht die Axt"
+  caption="Das Finale: 8-4, der echte Bowser, Feuer und Hämmer. Der Agent läuft hindurch und berührt die Axt bei x 4805 – damit ist das Spiel durchgespielt."
+/>
 
 Ehrliche Einordnung: Die Umgebung ist bei Greedy-Spiel deterministisch. „20/20" heißt **zuverlässig reproduzierbar**, nicht robust gegen Störungen.
+
+### Selbst ausprobieren
+
+<DemoEmbed
+  src="https://spl4sh-mario-reinforcement.hf.space"
+  href="https://huggingface.co/spaces/Spl4sH/mario-reinforcement"
+  title="Live-Demo · alle 32 Level"
+  note="Level im Dropdown wählen, Grad-CAM-Overlay optional dazuschalten. Der Space zeigt vorberechnete Läufe – warum, steht weiter unten."
+/>
 
 ## Der rote Faden: fünf Metriken, die etwas anderes maßen als gemeint
 
@@ -39,6 +64,12 @@ Das eigentliche Thema des Projekts hat sich erst beim Bauen gezeigt – und lief
 4. **Maximum statt Endposition (7-4):** Go-Explore bewertete Kandidaten nach dem erreichten Maximum – in einem Loop-Level zählte damit ein Ausflug, der im Rückwurf endete, als Erfolg.
 5. **Ein blindes Messgerät (8-4):** In der Loop-Passage zählt `x_pos` beim Im-Kreis-Laufen einfach weiter – Reward, `ProgressReward` und Go-Explore-Kriterium logen gleichzeitig. Mein Ersatzsignal war genauso blind: Ich suchte 40.000 Kandidaten lang mit dem falschen RAM-Byte (`$0760` statt `$074E`).
 
+<Figure
+  src="/projects/mario/problem_4-4.mp4"
+  alt="Der Agent läuft in Level 4-4 im Kreis statt zum Ziel"
+  caption="Fehler Nummer 1, live: Der Agent hat den Ausgang nie gesucht. Er läuft die Loop-Passage im Kreis und kassiert jedes Mal dieselbe Fortschrittsbelohnung – 13.824 Reward-Punkte, 0 % Flagge."
+/>
+
 Alle Fixes wurden **vorab am Exploit-Modell gemessen**, bevor neue Rechenzeit investiert wurde (13.824 → 1.574 bzw. 64.735 → 221). Gemeinsamer Nenner: Der Agent optimiert exakt das, was gemessen wird – nie das, was gemeint war. Dieselbe Lücke kostet hier ein Level und heißt in echten Systemen Alignment-Problem.
 
 ## Die lehrreichsten Etappen
@@ -48,6 +79,12 @@ Alle Fixes wurden **vorab am Exploit-Modell gemessen**, bevor neue Rechenzeit in
 - **8-4, das Finale:** brauchte eine **achte Aktion**. `SIMPLE_MOVEMENT` kennt kein ↓, ohne ↓ steigt man in keine Röhre – das Level war also *prinzipiell unlösbar*, egal wie lange trainiert wird. Als Opt-in-Schalter ergänzt, damit die 31 bestehenden Modelle unberührt bleiben.
 - **8-2, der lehrreichste Widerspruch:** Ein Resume-Lauf verbesserte den Trainings-Reward und verschlechterte gleichzeitig die Greedy-Leistung. Beide Zahlen stimmten – der Trainings-Reward mittelt über 16 stochastische Envs, der Greedy-Lauf ist ein einzelner deterministischer Durchgang.
 
+<Figure
+  src="/projects/mario/ppo_5-3.mp4"
+  alt="Der PPO-Agent löst Level 5-3, inklusive des Sprungs über die Lücke"
+  caption="Genau dieser Sprung über die Lücke in 5-3 war die Wand, an der vier Ansätze scheiterten – bis das Modell aus dem baugleichen Level 1-3 ihn auf Anhieb konnte."
+/>
+
 Daraus wurde eine Diagnose-Faustregel: *Kurve steigt noch → weitertrainieren; Kurve friert ein → Savestate-Suche; kenne ich ein baugleiches gelöstes Level → erst dessen Policy probieren.*
 
 ## Sichtbar gemacht
@@ -56,6 +93,19 @@ Daraus wurde eine Diagnose-Faustregel: *Kurve steigt noch → weitertrainieren; 
 - **Death-Heatmaps:** Todespositionen aus 5.409 Trainingsepisoden über einem Level-Panorama – man sieht, wie das Level von links nach rechts „erobert" wird
 - **Wenn der Agent scheitert:** drei GIFs der Zwischenstände davor – Reward-Hacking (4-4), Resignation vor einem Gate (7-4), Stehenbleiben aus Sicherheit (8-2). Jeder Fall führte zu einem konkreten Fix im Code.
 - **Mensch vs. KI:** eigenen Lauf aufnehmen und als Side-by-Side-GIF gegen den Agenten antreten, gegen jedes der 32 Level
+
+<Figure
+  src="/projects/mario/death_heatmap.png"
+  alt="Todesorte in Level 1-1 über den Trainingsverlauf als Dichtekurven über einem Level-Panorama"
+  pixelated={false}
+  caption="Todespositionen aus 5.409 Trainingsepisoden, gezeichnet über einem Panorama des Levels (Kameraposition pro Frame aus dem NES-RAM). Früh liegt der Berg auf der Rohrgruppe, in der Mitte werden die Gruben zum Hotspot, später wandern die Tode zu den Gegner-Clustern und der Endtreppe. Man sieht dem Agenten beim Lernen zu."
+/>
+
+<Figure
+  src="/projects/mario/mensch_vs_ki.mp4"
+  alt="Mensch und KI spielen Level 1-1 nebeneinander"
+  caption="Gleiches Level, links Mensch, rechts der trainierte DQN-Agent. Beide erreichen die Flagge, die KI ist rund 25 Spielsekunden schneller."
+/>
 
 ## Das Engineering drumherum
 
@@ -67,3 +117,9 @@ Daraus wurde eine Diagnose-Faustregel: *Kurve steigt noch → weitertrainieren; 
 ## Warum dieses Projekt
 
 RL versteht man nur, wenn man Replay Buffer, Target-Netze und Reward-Design einmal selbst baut und debuggt. Jedes Level zeigte eine andere RL-„Krankheit" mit eigenem Gegenmittel: Instabilität → Reward-Normalisierung, vorzeitige Konvergenz → mehr Entropie, Hard Exploration → Savestate-Suche, Reward-Hacking → messbare Reward-Fixes. Die eigentliche Lehre steckt aber in den fünf Metrik-Fehlern: Wenn eine Suche nichts findet, ist die erste Frage nicht „wie suche ich besser?", sondern „würde ich einen Treffer überhaupt bemerken?". Dazu der Teil, der ein Experiment in ein echtes Projekt verwandelt: reproduzierbar testen, containerisieren und als Browser-Demo zeigbar machen.
+
+<Figure
+  src="/projects/mario/ende_8-4.png"
+  alt="Der Abspann von Super Mario Bros: THANK YOU MARIO! YOUR QUEST IS OVER."
+  caption="Der Abspann, den das Spiel nach 8-4 zeigt – erreicht von einem Agenten, der nie etwas anderes gesehen hat als die Pixel auf dem Bildschirm."
+/>

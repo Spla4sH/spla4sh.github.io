@@ -7,7 +7,7 @@ const projects = defineCollection({
     base: './src/content/projects',
     generateId: ({ entry }) => entry.replace(/\.(md|mdx)$/, ''),
   }),
-  schema: ({ image }) =>
+  schema: () =>
     z.object({
       title: z.string(),
       description: z.string(),
@@ -20,7 +20,10 @@ const projects = defineCollection({
       featured: z.boolean().default(false),
       status: z.enum(['wip', 'done']).default('done'),
       date: z.coerce.date(),
-      cover: image().optional(),
+      // Path under /public rather than an imported asset: the covers are frames of
+      // animated media, which the image pipeline would re-encode and flatten.
+      cover: z.string().optional(),
+      coverAlt: z.string().optional(),
       draft: z.boolean().default(false),
     }),
 });
