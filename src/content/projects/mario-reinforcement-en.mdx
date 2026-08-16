@@ -17,6 +17,8 @@ import DemoEmbed from '../../components/DemoEmbed.astro';
 
 <Figure
   src="/projects/mario/vision.mp4"
+  width={512}
+  height={480}
   alt="Grad-CAM overlay of a greedy run through level 1-1"
   eager
   caption="The trained agent solves level 1-1. The red glow (Grad-CAM) shows what the CNN is attending to for each individual action."
@@ -37,6 +39,8 @@ Every level meets the same, up-front success criterion: **20 of 20 greedy episod
 
 <Figure
   src="/projects/mario/ppo_8-4.mp4"
+  width={512}
+  height={480}
   alt="The PPO agent beats Bowser in level 8-4 and reaches the axe"
   caption="The finale: 8-4, the real Bowser, fire and hammers. The agent runs through it and touches the axe at x 4805 – which finishes the game."
 />
@@ -64,6 +68,8 @@ The project's real subject only surfaced while building it – and it ran undern
 
 <Figure
   src="/projects/mario/problem_4-4.mp4"
+  width={512}
+  height={480}
   alt="The agent runs in circles in level 4-4 instead of heading for the exit"
   caption="Bug number one, live: the agent never looked for the exit. It runs the loop section in circles and collects the same progress reward every time around – 13,824 reward points, 0% flag rate."
 />
@@ -79,6 +85,8 @@ Every fix was **measured against the exploiting model up front**, before investi
 
 <Figure
   src="/projects/mario/ppo_5-3.mp4"
+  width={512}
+  height={480}
   alt="The PPO agent solves level 5-3, including the jump across the gap"
   caption="This exact jump across the gap in 5-3 was the wall four approaches ran into – until the model from the structurally identical level 1-3 cleared it on the first try."
 />
@@ -94,6 +102,8 @@ That turned into a diagnostic rule of thumb: *curve still rising → keep traini
 
 <Figure
   src="/projects/mario/death_heatmap.png"
+  width={1908}
+  height={1104}
   alt="Death locations in level 1-1 across training, as density curves over a level panorama"
   pixelated={false}
   caption="Death positions from 5,409 training episodes, drawn over a panorama of the level (camera position per frame taken from the NES RAM). Early on the peak sits on the pipe group, mid-training the pits become the hotspot, later the deaths move to the enemy clusters and the final staircase. You can watch the agent learn."
@@ -101,6 +111,8 @@ That turned into a diagnostic rule of thumb: *curve still rising → keep traini
 
 <Figure
   src="/projects/mario/mensch_vs_ki.mp4"
+  width={516}
+  height={240}
   alt="Human and AI playing level 1-1 side by side"
   caption="Same level, human on the left, the trained DQN agent on the right. Both reach the flag; the AI is about 25 game seconds faster."
 />
@@ -118,6 +130,8 @@ You only understand RL by building and debugging replay buffers, target networks
 
 <Figure
   src="/projects/mario/ende_8-4.png"
+  width={768}
+  height={720}
   alt="The Super Mario Bros ending screen: THANK YOU MARIO! YOUR QUEST IS OVER."
   caption="The ending the game shows after 8-4 – reached by an agent that never saw anything but the pixels on the screen."
 />

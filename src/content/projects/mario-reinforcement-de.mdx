@@ -17,6 +17,8 @@ import DemoEmbed from '../../components/DemoEmbed.astro';
 
 <Figure
   src="/projects/mario/vision.mp4"
+  width={512}
+  height={480}
   alt="Grad-CAM-Overlay eines Greedy-Durchlaufs von Level 1-1"
   eager
   caption="Der trainierte Agent löst Level 1-1. Das rote Leuchten (Grad-CAM) zeigt, worauf das CNN bei jeder einzelnen Aktion achtet."
@@ -37,6 +39,8 @@ Jedes Level erfüllt dasselbe, vorab definierte Erfolgskriterium: **20 von 20 Gr
 
 <Figure
   src="/projects/mario/ppo_8-4.mp4"
+  width={512}
+  height={480}
   alt="Der PPO-Agent besiegt Bowser in Level 8-4 und erreicht die Axt"
   caption="Das Finale: 8-4, der echte Bowser, Feuer und Hämmer. Der Agent läuft hindurch und berührt die Axt bei x 4805 – damit ist das Spiel durchgespielt."
 />
@@ -64,6 +68,8 @@ Das eigentliche Thema des Projekts hat sich erst beim Bauen gezeigt – und lief
 
 <Figure
   src="/projects/mario/problem_4-4.mp4"
+  width={512}
+  height={480}
   alt="Der Agent läuft in Level 4-4 im Kreis statt zum Ziel"
   caption="Fehler Nummer 1, live: Der Agent hat den Ausgang nie gesucht. Er läuft die Loop-Passage im Kreis und kassiert jedes Mal dieselbe Fortschrittsbelohnung – 13.824 Reward-Punkte, 0 % Flagge."
 />
@@ -79,6 +85,8 @@ Alle Fixes wurden **vorab am Exploit-Modell gemessen**, bevor neue Rechenzeit in
 
 <Figure
   src="/projects/mario/ppo_5-3.mp4"
+  width={512}
+  height={480}
   alt="Der PPO-Agent löst Level 5-3, inklusive des Sprungs über die Lücke"
   caption="Genau dieser Sprung über die Lücke in 5-3 war die Wand, an der vier Ansätze scheiterten – bis das Modell aus dem baugleichen Level 1-3 ihn auf Anhieb konnte."
 />
@@ -94,6 +102,8 @@ Daraus wurde eine Diagnose-Faustregel: *Kurve steigt noch → weitertrainieren; 
 
 <Figure
   src="/projects/mario/death_heatmap.png"
+  width={1908}
+  height={1104}
   alt="Todesorte in Level 1-1 über den Trainingsverlauf als Dichtekurven über einem Level-Panorama"
   pixelated={false}
   caption="Todespositionen aus 5.409 Trainingsepisoden, gezeichnet über einem Panorama des Levels (Kameraposition pro Frame aus dem NES-RAM). Früh liegt der Berg auf der Rohrgruppe, in der Mitte werden die Gruben zum Hotspot, später wandern die Tode zu den Gegner-Clustern und der Endtreppe. Man sieht dem Agenten beim Lernen zu."
@@ -101,6 +111,8 @@ Daraus wurde eine Diagnose-Faustregel: *Kurve steigt noch → weitertrainieren; 
 
 <Figure
   src="/projects/mario/mensch_vs_ki.mp4"
+  width={516}
+  height={240}
   alt="Mensch und KI spielen Level 1-1 nebeneinander"
   caption="Gleiches Level, links Mensch, rechts der trainierte DQN-Agent. Beide erreichen die Flagge, die KI ist rund 25 Spielsekunden schneller."
 />
@@ -118,6 +130,8 @@ RL versteht man nur, wenn man Replay Buffer, Target-Netze und Reward-Design einm
 
 <Figure
   src="/projects/mario/ende_8-4.png"
+  width={768}
+  height={720}
   alt="Der Abspann von Super Mario Bros: THANK YOU MARIO! YOUR QUEST IS OVER."
   caption="Der Abspann, den das Spiel nach 8-4 zeigt – erreicht von einem Agenten, der nie etwas anderes gesehen hat als die Pixel auf dem Bildschirm."
 />

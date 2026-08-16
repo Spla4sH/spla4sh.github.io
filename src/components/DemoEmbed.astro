@@ -14,12 +14,7 @@ const { src, href, title, note, height = 720 } = Astro.props;
 <div class="my-8 rounded-lg border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)]">
   <div class="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[var(--color-border)]">
     <span class="text-xs font-mono uppercase tracking-wider text-[var(--color-accent)]">{title}</span>
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener"
-      class="text-xs text-[var(--color-fg-dim)] hover:text-[var(--color-accent)] no-underline shrink-0"
-    >
+    <a href={href} target="_blank" rel="noopener" class="embed-link text-xs shrink-0">
       Hugging Face ↗
     </a>
   </div>
@@ -32,4 +27,19 @@ const { src, href, title, note, height = 720 } = Astro.props;
     class="w-full block bg-[var(--color-bg)]"
     style={`height: ${height}px`}></iframe>
 </div>
-{note && <p class="-mt-4 mb-8 text-sm text-[var(--color-fg-dim)] leading-relaxed">{note}</p>}
+{note && <p class="embed-note -mt-4 mb-8 text-sm leading-relaxed">{note}</p>}
+
+<style>
+  /* The embed sits inside .prose-content, whose `a` and `p` rules are more
+     specific than utility classes. Astro's scope attribute wins them back. */
+  .embed-link {
+    color: var(--color-fg-dim);
+    text-decoration: none;
+  }
+  .embed-link:hover {
+    color: var(--color-accent);
+  }
+  .embed-note {
+    color: var(--color-fg-dim);
+  }
+</style>

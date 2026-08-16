@@ -47,7 +47,11 @@ export function switchLangPath(currentUrl: URL, targetLang: Lang): string {
     return seg;
   });
 
-  return '/' + mapped.join('/');
+  // Keep the trailing slash the current URL has: without it every language
+  // switch and hreflang link points at a URL the host only answers with a
+  // redirect to the canonical, slashed one.
+  const trailingSlash = currentUrl.pathname.endsWith('/') ? '/' : '';
+  return '/' + mapped.join('/') + trailingSlash;
 }
 
 export const routeNames: Record<Lang, { projects: string }> = {

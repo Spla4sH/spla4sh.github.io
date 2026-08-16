@@ -3,6 +3,9 @@ interface Props {
   /** Path under /public, e.g. /projects/mario/vision.mp4 */
   src: string;
   alt: string;
+  /** Intrinsic size; reserves the box so loading media does not shift the page */
+  width: number;
+  height: number;
   /** Rendered below the media; supports inline markup via the default slot instead */
   caption?: string;
   /** Pixel-art media is upscaled with nearest-neighbour so it stays crisp */
@@ -10,7 +13,7 @@ interface Props {
   /** Hero figures load eagerly, everything else waits until it scrolls into view */
   eager?: boolean;
 }
-const { src, alt, caption, pixelated = true, eager = false } = Astro.props;
+const { src, alt, width, height, caption, pixelated = true, eager = false } = Astro.props;
 const isVideo = src.endsWith('.mp4');
 ---
 
@@ -19,22 +22,31 @@ const isVideo = src.endsWith('.mp4');
     isVideo ? (
       <video
         src={src}
-        class:list={['w-full rounded-lg border border-[var(--color-border)]', pixelated && 'pixelated']}
+        width={width}
+        height={height}
+        class:list={[
+          'w-full h-auto rounded-lg border border-[var(--color-border)]',
+          pixelated && 'pixelated',
+        ]}
         aria-label={alt}
         muted
         loop
         playsinline
         preload={eager ? 'auto' : 'none'}
-        autoplay={eager}
         data-autoplay-in-view
       />
     ) : (
       <img
         src={src}
         alt={alt}
+        width={width}
+        height={height}
         loading={eager ? 'eager' : 'lazy'}
         decoding="async"
-        class:list={['w-full rounded-lg border border-[var(--color-border)]', pixelated && 'pixelated']}
+        class:list={[
+          'w-full h-auto rounded-lg border border-[var(--color-border)]',
+          pixelated && 'pixelated',
+        ]}
       />
     )
   }
@@ -62,13 +74,25 @@ const isVideo = src.endsWith('.mp4');
     const videos = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay-in-view]');
     if (!videos.length) return;
 
+    // Looping clips are motion the visitor did not ask for; leave them on the
+    // first frame and give them controls instead.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      videos.forEach((video) => {
+        video.preload = 'metadata';
+        video.controls = true;
+      });
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           const video = entry.target as HTMLVideoElement;
           if (entry.isIntersecting) {
             video.play().catch(() => {
-              /* autoplay can be blocked; the controls-free clip is decorative */
+              // Low-power mode and some strict settings refuse autoplay outright.
+              // Without controls the visitor would be left with a frozen frame.
+              video.controls = true;
             });
           } else {
             video.pause();
