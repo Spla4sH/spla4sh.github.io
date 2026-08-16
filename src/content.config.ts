@@ -20,10 +20,6 @@ const projects = defineCollection({
       featured: z.boolean().default(false),
       status: z.enum(['wip', 'done']).default('done'),
       date: z.coerce.date(),
-      // Path under /public rather than an imported asset: the covers are frames of
-      // animated media, which the image pipeline would re-encode and flatten.
-      cover: z.string().optional(),
-      coverAlt: z.string().optional(),
       draft: z.boolean().default(false),
     }),
 });
